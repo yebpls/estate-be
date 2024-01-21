@@ -2,11 +2,16 @@ package com.fptu.estate;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Encoders;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import javax.crypto.SecretKey;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
+@SecurityScheme(name = "Authorization", scheme = "bearer", type = SecuritySchemeType.HTTP, in = SecuritySchemeIn.HEADER)
+
 public class EstateApplication {
 
 	public static void main(String[] args) {
