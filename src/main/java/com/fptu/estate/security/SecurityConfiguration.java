@@ -48,19 +48,6 @@ public class SecurityConfiguration {
             .disable())
         .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests((authorize) -> authorize
-//            .requestMatchers("/login").permitAll()
-//            .requestMatchers(
-//                "/test",
-//                "/swagger-ui.html",
-//                "/v2/api-docs",
-//                "/v3/api-docs",
-//                "/v3/api-docs/**",
-//                "/swagger-resources",
-//                "/swagger-resources/**",
-//                "/configuration/ui",
-//                "/configuration/security",
-//                "/webjars/**"
-//                ).permitAll()
             .requestMatchers("/login/**", "/test", "/swagger-ui/**", "/api-docs/**").permitAll()
             .anyRequest().authenticated())
         .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
