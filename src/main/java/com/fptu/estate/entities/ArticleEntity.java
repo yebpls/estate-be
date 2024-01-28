@@ -1,6 +1,7 @@
 package com.fptu.estate.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -35,10 +36,12 @@ public class ArticleEntity implements Serializable {
   private Integer status;
 
   @ManyToOne
+  @JsonManagedReference
   @JoinColumn(name = "city_id")
   private CityEntity city;
 
   @ManyToOne
+  @JsonManagedReference
   @JoinColumn(name = "agency_id")
   private AgencyEntity agency;
 

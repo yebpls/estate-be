@@ -1,5 +1,7 @@
 package com.fptu.estate.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,9 +34,11 @@ public class ProjectEntity {
   private int status;
 
   @ManyToOne
+  @JsonManagedReference
   @JoinColumn(name = "investor_id")
   private InvestorEntity investor;
 
   @OneToMany(mappedBy = "project")
+  @JsonBackReference
   private List<BuildingEntity> buildings;
 }

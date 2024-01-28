@@ -1,5 +1,7 @@
 package com.fptu.estate.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,11 +23,14 @@ public class CityEntity {
   private String cityName;
 
   @OneToMany(mappedBy = "city")
+  @JsonBackReference
   private List<AccountEntity> accounts;
 
   @OneToMany(mappedBy = "city")
+  @JsonBackReference
   private List<BuildingEntity> buildings;
 
   @OneToMany(mappedBy = "city")
+  @JsonBackReference
   private List<ArticleEntity> articles;
 }

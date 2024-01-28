@@ -1,5 +1,7 @@
 package com.fptu.estate.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -49,15 +51,19 @@ public class AccountEntity implements Serializable {
   private boolean status;
 
   @ManyToOne
+  @JsonManagedReference
   @JoinColumn(name = "city_id")
   private CityEntity city;
 
   @OneToMany(mappedBy = "account")
+  @JsonBackReference
   private List<AgencyEntity> agencies;
 
   @OneToMany(mappedBy = "account")
+  @JsonBackReference
   private List<InvestorEntity> investors;
 
   @OneToMany(mappedBy = "account")
+  @JsonBackReference
   private List<CustomerEntity> customers;
 }
