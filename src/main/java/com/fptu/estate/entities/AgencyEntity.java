@@ -24,4 +24,7 @@ public class AgencyEntity {
   @OneToMany(mappedBy = "agency")
   private List<ArticleEntity> articles;
 
+  @OneToMany(mappedBy = "agency")
+  private List<BookingDistributionEntity> bookingDistributions;
+
 }
