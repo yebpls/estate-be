@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ApartmentRepository extends JpaRepository<ApartmentEntity, Integer> {
   List<ApartmentEntity> findAllByStatus(Integer status);
+
+  ApartmentEntity findByIdAndStatus(Integer id, Integer status);
 }

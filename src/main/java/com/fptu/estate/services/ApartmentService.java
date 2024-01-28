@@ -1,6 +1,7 @@
 package com.fptu.estate.services;
 
 import com.fptu.estate.DTO.ApartmentDTO;
+import com.fptu.estate.entities.ApartmentEntity;
 import com.fptu.estate.mapper.ApartmentMapper;
 import com.fptu.estate.repository.ApartmentRepository;
 import com.fptu.estate.services.imp.ApartmentServiceImp;
@@ -22,5 +23,11 @@ public class ApartmentService implements ApartmentServiceImp {
   public List<ApartmentDTO> findAll() {
     return apartmentRepository.findAllByStatus(1)
         .stream().map(apartmentMapper::convertToDTO).collect(Collectors.toList());
+  }
+
+  @Override
+  public ApartmentDTO findById(Integer id) {
+    ApartmentDTO apartment = apartmentMapper.convertToDTO(apartmentRepository.findByIdAndStatus(id, 1)) ;
+    return apartment;
   }
 }

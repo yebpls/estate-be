@@ -3,8 +3,6 @@ package com.fptu.estate.mapper;
 import com.fptu.estate.DTO.ApartmentDTO;
 import com.fptu.estate.entities.ApartmentEntity;
 import com.fptu.estate.entities.BuildingEntity;
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

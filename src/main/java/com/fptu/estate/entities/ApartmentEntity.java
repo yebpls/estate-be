@@ -1,5 +1,6 @@
 package com.fptu.estate.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -42,10 +43,12 @@ public class ApartmentEntity {
   @Column(name = "area")
   private Double area;
 
+  @JsonIgnoreProperties("apartment")
   @ManyToOne
   @JoinColumn(name = "building_id")
   private BuildingEntity building;
 
+  @JsonIgnoreProperties("apartment")
   @OneToMany(mappedBy = "apartment")
   private List<BookingDistributionEntity> bookingDistributions;
 

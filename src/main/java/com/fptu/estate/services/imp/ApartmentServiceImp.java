@@ -5,4 +5,5 @@ import java.util.List;
 
 public interface ApartmentServiceImp {
   List<ApartmentDTO> findAll();
+  ApartmentDTO findById(Integer id);
 }
