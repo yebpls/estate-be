@@ -39,7 +39,7 @@ public class JwtFilter extends OncePerRequestFilter {
     Optional<String> tokenOptional = Optional.ofNullable(bearerToken);
 
 //    Optional<String> bearerToken = Optional.ofNullable(request.getHeader("Authorization"));
-//    System.out.println("Kiem tra filter: " + tokenOptional);
+    System.out.println("Kiem tra filter: " + tokenOptional);
 
 //      bearerToken.filter(data -> data.startsWith("Bearer ")).isPresent()
     if (tokenOptional.isPresent()) {
