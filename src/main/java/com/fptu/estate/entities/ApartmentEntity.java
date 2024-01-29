@@ -45,6 +45,9 @@ public class ApartmentEntity {
   @Column(name = "area")
   private Double area;
 
+  @Column(name = "main_image")
+  private String mainImage;
+
 
   @ManyToOne
   @JsonManagedReference

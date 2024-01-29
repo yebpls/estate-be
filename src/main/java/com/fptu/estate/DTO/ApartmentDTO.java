@@ -25,4 +25,9 @@ public class ApartmentDTO implements Serializable {
 
   private Double area;
 
+  private String mainImage;
+
+  private String projectName;
+
+  private String cityName;
 }
