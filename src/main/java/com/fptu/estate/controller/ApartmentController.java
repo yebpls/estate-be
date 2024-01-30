@@ -12,11 +12,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin
@@ -57,7 +53,21 @@ public class ApartmentController {
     } catch (Exception e) {
       return new ResponseEntity<>("No apartment found!!!", HttpStatus.NOT_FOUND);
     }
-
   }
-
+//  @Operation(summary = "Create a new apartment")
+//  @ApiResponses(value = {
+//          @ApiResponse(responseCode = "201", description = "Apartment created successfully", content = @Content(schema = @Schema(implementation = ApartmentDTO.class))),
+//          @ApiResponse(responseCode = "400", description = "Bad request"),
+//          @ApiResponse(responseCode = "500", description = "Internal error")
+//  })
+//  @PostMapping("/create")
+//  @ResponseStatus(HttpStatus.CREATED)
+//  public ResponseEntity<?> createApartment(@RequestBody ApartmentDTO newApartment) {
+//    try {
+//      ApartmentDTO createdApartment = apartmentServiceImp.createApartment(newApartment);
+//      return ResponseEntity.status(HttpStatus.CREATED).body(createdApartment);
+//    } catch (Exception e) {
+//      return new ResponseEntity<>("Failed to create apartment: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+//    }
+//  }
 }

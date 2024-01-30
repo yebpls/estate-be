@@ -49,4 +49,24 @@ public class ApartmentService implements ApartmentServiceImp {
     ApartmentDTO apartment = apartmentMapper.convertToDTO(apartmentRepository.findByIdAndStatus(id, 1)) ;
     return apartment;
   }
+
+    @Override
+    public ApartmentDTO createApartment(ApartmentDTO newApartment) {
+        try {
+            // Perform any necessary validation or business logic before saving the apartment
+            ApartmentEntity apartmentEntity = apartmentMapper.revertToEntity(newApartment);
+
+            // Example: You may want to set default status for a new apartment
+            apartmentEntity.setStatus(1);
+
+            // Save the new apartment
+            ApartmentEntity savedApartment = apartmentRepository.save(apartmentEntity);
+
+            // Convert the saved entity back to DTO and return it
+            return apartmentMapper.convertToDTO(savedApartment);
+        } catch (Exception e) {
+            // Handle exceptions, log errors, or throw custom exceptions as needed
+            throw new RuntimeException("Failed to create apartment", e);
+        }
+    }
 }
