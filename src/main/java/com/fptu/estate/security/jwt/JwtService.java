@@ -1,5 +1,6 @@
 package com.fptu.estate.security.jwt;
 
+import com.fptu.estate.entities.AccountEntity;
 import com.fptu.estate.entities.UserEntity;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -18,8 +19,8 @@ public class JwtService {
 
   private int expiredTime = 8 * 60 * 60 * 1000;
 
-  public String generateToken(String role, UserEntity userDetails) {
-    return generateToken(Map.of("role", role), userDetails);
+  public String generateToken(String role, AccountEntity account) {
+    return generateToken(Map.of("role", role), account);
   }
 
   public String generateToken(String data) {
@@ -33,14 +34,14 @@ public class JwtService {
   }
 
 
-  public String generateToken(Map<String, Object> extraClaims, UserEntity userDetails) {
+  public String generateToken(Map<String, Object> extraClaims, AccountEntity account) {
     SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(strKey));
     Date date = new Date();
     long futureMilis = date.getTime() + expiredTime;
 
     Date futureDate = new Date(futureMilis);
 
-    return Jwts.builder().setClaims(extraClaims).setSubject(String.valueOf(userDetails.getId()))
+    return Jwts.builder().setClaims(extraClaims).setSubject(String.valueOf(account.getId()))
         .expiration(futureDate)
         .signWith(key)
         .compact();

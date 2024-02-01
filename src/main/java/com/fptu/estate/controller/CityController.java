@@ -1,7 +1,10 @@
 package com.fptu.estate.controller;
 
 import com.fptu.estate.DTO.ApartmentDTO;
+<<<<<<< HEAD
 import com.fptu.estate.DTO.CityDTO;
+=======
+>>>>>>> origin/sontt
 import com.fptu.estate.entities.CityEntity;
 import com.fptu.estate.payload.response.BaseResponse;
 import com.fptu.estate.services.imp.CityServiceImp;
@@ -27,11 +30,12 @@ public class CityController {
   @Autowired
   private CityServiceImp cityServiceImp;
 
-  @Operation(summary = "Get all city")
+
+  @Operation(summary = "Get All City")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Load city List", content = @Content(schema = @Schema(implementation = CityDTO.class))),
+      @ApiResponse(responseCode = "200", description = "Load City List", content = @Content(schema = @Schema(implementation = ApartmentDTO.class))),
       @ApiResponse(responseCode = "404", description = "Not found"),
-      @ApiResponse(responseCode = "400", description = "Bad request"),
+      @ApiResponse(responseCode = "403", description = "Bad request"),
       @ApiResponse(responseCode = "500", description = "Internal error")
   })
   @GetMapping("")

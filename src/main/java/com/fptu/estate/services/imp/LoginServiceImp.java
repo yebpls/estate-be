@@ -1,7 +1,7 @@
 package com.fptu.estate.services.imp;
 
-import com.fptu.estate.entities.UserEntity;
+import com.fptu.estate.entities.AccountEntity;
 
 public interface LoginServiceImp {
-  UserEntity checkLogin(String email, String password);
+  AccountEntity checkLogin(String email, String password);
 }
