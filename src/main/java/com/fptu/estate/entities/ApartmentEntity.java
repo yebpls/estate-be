@@ -47,8 +47,7 @@ public class ApartmentEntity {
 
   @Column(name = "main_image")
   private String mainImage;
-
-
+  
   @ManyToOne
   @JsonManagedReference
   @JoinColumn(name = "building_id")
