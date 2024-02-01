@@ -9,8 +9,10 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.util.List;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @Entity(name = "customer")
 public class CustomerEntity {
   @Id
@@ -23,4 +25,10 @@ public class CustomerEntity {
 
   @OneToMany(mappedBy = "customer")
   private List<SubscriptionEntity> subscriptions;
+
+  public CustomerEntity(Integer id, AccountEntity account) {
+    this.id = id;
+    this.account = account;
+  }
+
 }

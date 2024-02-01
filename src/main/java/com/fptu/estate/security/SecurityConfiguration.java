@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -45,17 +47,27 @@ public class SecurityConfiguration {
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception{
-    return httpSecurity.csrf((csrf) -> csrf.disable())
-        .cors((cors) -> cors
-            .configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues())
-            .disable())
+     httpSecurity.cors(Customizer.withDefaults())
         .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests((authorize) -> authorize
             .requestMatchers("/login/**", "/test", "/swagger-ui/**", "/api-docs/**").permitAll()
             .requestMatchers("/api/**").permitAll()
             .anyRequest().authenticated())
-        .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-        .build();
+        .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+//        .build();
+     httpSecurity.csrf(AbstractHttpConfigurer::disable);
+     return httpSecurity.build();
+  }
+
+  @Bean
+  CorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration configuration = new CorsConfiguration();
+    configuration.setAllowedOrigins(Arrays.asList("*"));
+    configuration.setAllowedMethods(Arrays.asList("*"));
+    configuration.setAllowedHeaders(Arrays.asList("*"));
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", configuration);
+    return source;
   }
 
 }

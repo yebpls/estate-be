@@ -9,8 +9,10 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.util.List;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @Entity(name = "investor")
 public class InvestorEntity {
   @Id
@@ -23,4 +25,10 @@ public class InvestorEntity {
 
   @OneToMany(mappedBy = "investor")
   private List<ProjectEntity> projects;
+
+  public InvestorEntity(Integer id, AccountEntity account) {
+    this.id = id;
+    this.account = account;
+  }
+
 }
