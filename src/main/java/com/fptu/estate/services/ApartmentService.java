@@ -9,6 +9,8 @@ import com.fptu.estate.repository.ApartmentRepository;
 import com.fptu.estate.services.imp.ApartmentServiceImp;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -56,17 +58,60 @@ public class ApartmentService implements ApartmentServiceImp {
             // Perform any necessary validation or business logic before saving the apartment
             ApartmentEntity apartmentEntity = apartmentMapper.revertToEntity(newApartment);
 
-            // Example: You may want to set default status for a new apartment
             apartmentEntity.setStatus(1);
 
-            // Save the new apartment
-            ApartmentEntity savedApartment = apartmentRepository.save(apartmentEntity);
+            // Save the apartment entity and get the saved entity
+            apartmentRepository.save(apartmentEntity);
 
             // Convert the saved entity back to DTO and return it
-            return apartmentMapper.convertToDTO(savedApartment);
+            return apartmentMapper.convertToDTO(apartmentEntity);
         } catch (Exception e) {
             // Handle exceptions, log errors, or throw custom exceptions as needed
             throw new RuntimeException("Failed to create apartment", e);
+        }
+    }
+    public ApartmentDTO updateApartment(ApartmentDTO updatedApartment) throws NotFoundException {
+        try {
+            // Check if the apartment exists
+            ApartmentEntity existingApartment = apartmentRepository.findByIdAndStatus(updatedApartment.getId(), 1);
+            if (existingApartment == null) {
+                throw new NotFoundException("Apartment not found");
+            }
+
+            // Update apartment details
+            // Note: You may want to validate and perform additional business logic here
+
+            // Map updatedApartment DTO to an entity
+            ApartmentEntity updatedEntity = apartmentMapper.revertToEntity(updatedApartment);
+
+            // Set the status of the updated entity (assuming 1 means active)
+            updatedEntity.setStatus(1);
+
+            // Save the updated entity
+            ApartmentEntity savedEntity = apartmentRepository.save(updatedEntity);
+
+            // Convert the saved entity back to DTO and return it
+            return apartmentMapper.convertToDTO(savedEntity);
+        } catch (NotFoundException e) {
+            throw e; // Re-throw NotFoundException
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to update apartment", e);
+        }
+    }
+    public void deleteApartment(Integer id) throws NotFoundException {
+        try {
+            // Check if the apartment exists
+            ApartmentEntity existingApartment = apartmentRepository.findById(id)
+                    .orElseThrow(() -> new NotFoundException("Apartment not found"));
+
+            // Perform any additional checks or business logic if needed
+
+            // Delete the apartment
+            apartmentRepository.delete(existingApartment);
+        } catch (NotFoundException e) {
+            throw e; // Re-throw NotFoundException
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to delete apartment", e);
         }
     }
 }
