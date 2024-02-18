@@ -81,7 +81,7 @@ public class ApartmentController {
   })
   @PutMapping("/{id}")
   public ResponseEntity<?> updateApartment(
-          @Parameter(description = "Apartment ID", example = "1") @PathVariable("id") Integer id,
+          @Parameter(description = "Apartment ID") @PathVariable("id") Integer id,
           @RequestBody ApartmentDTO updatedApartment) {
     try {
       // Set the ID of the updated apartment based on the path variable
@@ -91,7 +91,12 @@ public class ApartmentController {
       ApartmentDTO apartment = apartmentServiceImp.updateApartment(updatedApartment);
 
       return ResponseEntity.ok(apartment);
-    } catch (Exception e) {
+
+    }
+    catch (NotFoundException e) {
+      return new ResponseEntity<>("Apartment not found", HttpStatus.NOT_FOUND);
+    }
+    catch (Exception e) {
       // Other exceptions
       return new ResponseEntity<>("Failed to update apartment: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
