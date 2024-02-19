@@ -1,14 +1,12 @@
 package com.fptu.estate.controller;
 
-import com.fptu.estate.DTO.ArticleDTO;
-import com.fptu.estate.DTO.BuildingDTO;
-import com.fptu.estate.services.imp.ArticleServiceImp;
+import com.fptu.estate.DTO.AgencyDTO;
+import com.fptu.estate.services.imp.AgencyServiceImp;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,26 +18,25 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/api/article")
-public class ArticleController {
+@RequestMapping("/api/agency")
+public class AgencyController {
   @Autowired
-  private ArticleServiceImp articleServiceImp;
+  private AgencyServiceImp agencyServiceImp;
 
-  @Operation(summary = "Get all articles")
+  @Operation(summary = "Get agency details by ID")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Load Article", content = @Content(schema = @Schema(implementation = ArticleDTO.class))),
+      @ApiResponse(responseCode = "200", description = "Load Agency", content = @Content(schema = @Schema(implementation = AgencyDTO.class))),
       @ApiResponse(responseCode = "404", description = "Not found"),
       @ApiResponse(responseCode = "400", description = "Bad request"),
       @ApiResponse(responseCode = "500", description = "Internal error")
   })
-  @GetMapping("")
-  public ResponseEntity<?> getAllArticles (){
+  @GetMapping("/{id}")
+  public ResponseEntity<?> getAgencyById (@PathVariable("id") Integer id){
     try {
-      List<ArticleDTO> listArticle =articleServiceImp.getAllArticles();
-      return ResponseEntity.ok(listArticle);
+      AgencyDTO agencyDTO = agencyServiceImp.findAgencyById(id);
+      return ResponseEntity.ok(agencyDTO);
     } catch (Exception e) {
-      return new ResponseEntity<>("No articles found!!!", HttpStatus.NOT_FOUND);
+      return new ResponseEntity<>("No agency found!!!", HttpStatus.NOT_FOUND);
     }
   }
-
 }
