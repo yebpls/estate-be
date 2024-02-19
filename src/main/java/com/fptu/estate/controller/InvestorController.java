@@ -1,7 +1,7 @@
 package com.fptu.estate.controller;
 
-import com.fptu.estate.DTO.AgencyDTO;
-import com.fptu.estate.services.imp.AgencyServiceImp;
+import com.fptu.estate.DTO.InvestorDTO;
+import com.fptu.estate.services.imp.InvestorServiceImp;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -18,25 +18,26 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/api/agency")
-public class AgencyController {
+@RequestMapping("/api/investor")
+public class InvestorController {
   @Autowired
-  private AgencyServiceImp agencyServiceImp;
+  private InvestorServiceImp investorServiceImp;
 
-  @Operation(summary = "Get agency details by Account ID")
+  @Operation(summary = "Get investor details by Account ID")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Load Agency", content = @Content(schema = @Schema(implementation = AgencyDTO.class))),
+      @ApiResponse(responseCode = "200", description = "Load Investor", content = @Content(schema = @Schema(implementation = InvestorDTO.class))),
       @ApiResponse(responseCode = "404", description = "Not found"),
       @ApiResponse(responseCode = "400", description = "Bad request"),
       @ApiResponse(responseCode = "500", description = "Internal error")
   })
   @GetMapping("/{id}")
-  public ResponseEntity<?> getAgencyById (@PathVariable("id") Integer id){
+  public ResponseEntity<?> getInvestorById (@PathVariable("id") Integer id){
     try {
-      AgencyDTO agencyDTO = agencyServiceImp.findAgencyById(id);
-      return ResponseEntity.ok(agencyDTO);
+
+      InvestorDTO investorDTO = investorServiceImp.findInvestorById(id);
+      return ResponseEntity.ok(investorDTO);
     } catch (Exception e) {
-      return new ResponseEntity<>("No agency found!!!", HttpStatus.NOT_FOUND);
+      return new ResponseEntity<>("No investor found!!!", HttpStatus.NOT_FOUND);
     }
   }
 }

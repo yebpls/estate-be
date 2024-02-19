@@ -77,9 +77,12 @@ public class AccountEntity implements Serializable {
   @JsonBackReference
   private List<CustomerEntity> customers;
 
+  private String name;
+
+
   public AccountEntity(Integer id, String password, String email, String avatarUrl, String role,
       Integer gender, Date dob, Date createDate, Date updateDate, Double balance, Integer status,
-      CityEntity city) {
+      CityEntity city, String name) {
     this.id = id;
     this.password = password;
     this.email = email;
@@ -92,7 +95,9 @@ public class AccountEntity implements Serializable {
     this.balance = balance;
     this.status = status;
     this.city = city;
+    this.name = name;
   }
+
 
 
 }

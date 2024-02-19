@@ -23,5 +23,7 @@ import lombok.Data;
     private Integer status;
 
     private Integer cityId;
+
+    private String name;
   }
 

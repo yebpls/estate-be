@@ -75,7 +75,7 @@ public class AccountService implements AccountServiceImp {
       AccountEntity account = accountRepository.save(new AccountEntity
           (null, passwordEncoder.encode(accountRegisterRequest.getPassword()),
               accountRegisterRequest.getEmail(), avatarURL, accountRegisterRequest.getRole(),
-              1,accountRegisterRequest.getDob(),date, date, 0.0, 0, city)) ;
+              1,accountRegisterRequest.getDob(),date, date, 0.0, 0, city, accountRegisterRequest.getName())) ;
       if(account.getRole().matches("CUSTOMER")){
         CustomerEntity customer = customerRepository.save(new CustomerEntity(null, account));
       }

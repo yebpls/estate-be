@@ -17,4 +17,6 @@ public class AccountRegisterRequest {
 
   private Date dob;
 
+  private String name;
+
 }
