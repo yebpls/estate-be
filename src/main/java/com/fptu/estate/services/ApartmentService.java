@@ -28,17 +28,7 @@ public class ApartmentService implements ApartmentServiceImp {
   public List<ApartmentDTO> findAll() {
     List<ApartmentEntity> apartments = apartmentRepository.findAllByStatus(1);
     return apartments.stream()
-        .map(apartment -> {
-          List<ApartmentImageEntity> apartmentImages = apartmentImageRepository.findAllByApartment(apartment);
-          ApartmentDTO apartmentDTO = apartmentMapper.convertToDTO(apartment);
-          if(apartmentImages.size() > 0){
-            apartmentDTO.setMainImage(apartmentImages.get(0).getImageUrl());
-          } else {
-            apartmentDTO.setMainImage("");
-
-          }
-          return apartmentDTO;
-        })
+        .map(apartmentMapper::convertToDTO)
         .collect(Collectors.toList());
 //    return apartmentRepository.findAllByStatus(1)
 //        .stream().map(apartmentMapper::convertToDTO).collect(Collectors.toList());
@@ -48,5 +38,36 @@ public class ApartmentService implements ApartmentServiceImp {
   public ApartmentDTO findById(Integer id) {
     ApartmentDTO apartment = apartmentMapper.convertToDTO(apartmentRepository.findByIdAndStatus(id, 1)) ;
     return apartment;
+  }
+
+  @Override
+  public void update(ApartmentDTO apartmentDTO) {
+    ApartmentEntity apartment = apartmentMapper.revertToEntity(apartmentDTO);
+    try {
+      apartmentRepository.save(apartment);
+    } catch (Exception e) {
+      throw new RuntimeException("Error update apartment " + e.getMessage());
+    }
+  }
+
+  @Override
+  public void create(ApartmentDTO apartmentDTO) {
+    ApartmentEntity apartment = apartmentMapper.revertToEntity(apartmentDTO);
+    try {
+      apartmentRepository.save(apartment);
+    } catch (Exception e) {
+      throw new RuntimeException("Error create apartment " + e.getMessage());
+    }
+  }
+
+  @Override
+  public boolean deleteById(Integer id) {
+    ApartmentEntity apartment = apartmentRepository.findById(id).orElseThrow();
+    if(apartment != null) {
+      apartmentRepository.deleteById(id);
+      return true;
+    } else {
+      return false;
+    }
   }
 }

@@ -13,8 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -59,6 +63,58 @@ public class ApartmentController {
     }
   }
 
+  @Operation(summary = "Update apartment by ID")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "201", description = "Update Apartment Successfully!!!"),
+      @ApiResponse(responseCode = "404", description = "Not found"),
+      @ApiResponse(responseCode = "400", description = "Bad request"),
+      @ApiResponse(responseCode = "500", description = "Internal error")
+  })
+  @PutMapping("/{id}")
+  public ResponseEntity<?> updateApartmentById(@Parameter(description = "Apartment ID", example = "1") @PathVariable("id") Integer id, @RequestBody ApartmentDTO apartmentDTO){
+    try {
+      ApartmentDTO apartment = apartmentServiceImp.findById(id);
+      if(apartment != null) {
+        apartmentServiceImp.update(apartmentDTO);
+      } else {
+        return new ResponseEntity<>("No apartment found!!!", HttpStatus.NOT_FOUND);
+      }
+      return ResponseEntity.ok("Update successfully");
+    } catch (Exception e) {
+      return new ResponseEntity<>("No apartment found!!!", HttpStatus.NOT_FOUND);
+    }
+  }
 
+  @Operation(summary = "Create apartment")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "201", description = "Create Apartment!!!"),
+      @ApiResponse(responseCode = "404", description = "Not found"),
+      @ApiResponse(responseCode = "400", description = "Bad request"),
+      @ApiResponse(responseCode = "500", description = "Internal error")
+  })
+  @PostMapping("/create")
+  public ResponseEntity<?> createApartment(@RequestBody ApartmentDTO apartmentDTO){
+    try {
+        apartmentServiceImp.create(apartmentDTO);
+      return ResponseEntity.ok("Create successfully");
+    } catch (Exception e) {
+      return new ResponseEntity<>("No apartment found!!!", HttpStatus.NOT_FOUND);
+    }
+  }
 
+  @Operation(summary = "Delete existing apartment")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Apartment deleted"),
+      @ApiResponse(responseCode = "404", description = "Not found"),
+      @ApiResponse(responseCode = "400", description = "Bad request"),
+      @ApiResponse(responseCode = "500", description = "Internal error")
+  })
+  @DeleteMapping("/delete/{id}")
+  public ResponseEntity<?> deleteApartment(@PathVariable("id") Integer id) {
+    if (apartmentServiceImp.deleteById(id)) {
+      return new ResponseEntity<>("Product deleted successfully", HttpStatus.OK);
+    } else {
+      return new ResponseEntity<>("Product deleted failed", HttpStatus.BAD_REQUEST);
+    }
+  }
 }
