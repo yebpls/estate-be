@@ -1,10 +1,9 @@
 package com.fptu.estate.controller;
 
 import com.fptu.estate.DTO.ApartmentDTO;
-<<<<<<< HEAD
+
 import com.fptu.estate.DTO.CityDTO;
-=======
->>>>>>> origin/sontt
+
 import com.fptu.estate.entities.CityEntity;
 import com.fptu.estate.payload.response.BaseResponse;
 import com.fptu.estate.services.imp.CityServiceImp;
