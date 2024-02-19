@@ -57,7 +57,8 @@ public class ApartmentController {
     } catch (Exception e) {
       return new ResponseEntity<>("No apartment found!!!", HttpStatus.NOT_FOUND);
     }
-
   }
+
+
 
 }
