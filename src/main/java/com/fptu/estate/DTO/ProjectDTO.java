@@ -18,4 +18,6 @@ public class ProjectDTO implements Serializable {
 
   private Integer investorId;
 
+  private String image;
+
 }
