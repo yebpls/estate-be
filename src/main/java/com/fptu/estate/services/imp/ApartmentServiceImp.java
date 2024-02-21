@@ -5,6 +5,8 @@ import java.util.List;
 
 public interface ApartmentServiceImp {
   List<ApartmentDTO> findAll();
+  List<ApartmentDTO> findAllByBuildingId(Integer id);
+  List<ApartmentDTO> findAllByProjectId(Integer id);
   ApartmentDTO findById(Integer id);
   void update(ApartmentDTO apartmentDTO);
   void create(ApartmentDTO apartmentDTO);

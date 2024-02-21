@@ -45,6 +45,39 @@ public class ApartmentController {
       return ResponseEntity.ok(list);
     }
   }
+  @Operation(summary = "Get all apartments By Building ID")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Load Apartments List", content = @Content(schema = @Schema(implementation = ApartmentDTO.class))),
+      @ApiResponse(responseCode = "404", description = "Not found"),
+      @ApiResponse(responseCode = "400", description = "Bad request"),
+      @ApiResponse(responseCode = "500", description = "Internal error")
+  })
+  @GetMapping("/building/{building-id}")
+  public ResponseEntity<?> findAllByBuildingId(@Parameter(description = "Building ID", example = "1") @PathVariable("building-id") Integer id){
+    List<ApartmentDTO> list = apartmentServiceImp.findAllByBuildingId(id);
+    if (list.isEmpty()) {
+      return new ResponseEntity<>("No apartment found!!!", HttpStatus.NOT_FOUND);
+    } else {
+      return ResponseEntity.ok(list);
+    }
+  }
+
+  @Operation(summary = "Get all apartments By Building ID")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Load Apartments List", content = @Content(schema = @Schema(implementation = ApartmentDTO.class))),
+      @ApiResponse(responseCode = "404", description = "Not found"),
+      @ApiResponse(responseCode = "400", description = "Bad request"),
+      @ApiResponse(responseCode = "500", description = "Internal error")
+  })
+  @GetMapping("/project/{project-id}")
+  public ResponseEntity<?> findAllByProjectId(@Parameter(description = "Building ID", example = "1") @PathVariable("project-id") Integer id){
+    List<ApartmentDTO> list = apartmentServiceImp.findAllByProjectId(id);
+    if (list.isEmpty()) {
+      return new ResponseEntity<>("No apartment found!!!", HttpStatus.NOT_FOUND);
+    } else {
+      return ResponseEntity.ok(list);
+    }
+  }
 
   @Operation(summary = "Get apartment details by ID")
   @ApiResponses(value = {

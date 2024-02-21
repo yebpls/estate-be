@@ -2,10 +2,13 @@ package com.fptu.estate.services;
 
 import com.fptu.estate.DTO.ApartmentDTO;
 import com.fptu.estate.entities.ApartmentEntity;
-import com.fptu.estate.entities.ApartmentImageEntity;
+import com.fptu.estate.entities.BuildingEntity;
+import com.fptu.estate.entities.ProjectEntity;
 import com.fptu.estate.mapper.ApartmentMapper;
 import com.fptu.estate.repository.ApartmentImageRepository;
 import com.fptu.estate.repository.ApartmentRepository;
+import com.fptu.estate.repository.BuildingRepository;
+import com.fptu.estate.repository.ProjectRepository;
 import com.fptu.estate.services.imp.ApartmentServiceImp;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,6 +26,10 @@ public class ApartmentService implements ApartmentServiceImp {
 
   @Autowired
   private ApartmentImageRepository apartmentImageRepository;
+  @Autowired
+  private BuildingRepository buildingRepository;
+  @Autowired
+  private ProjectRepository projectRepository;
 
   @Override
   public List<ApartmentDTO> findAll() {
@@ -33,6 +40,23 @@ public class ApartmentService implements ApartmentServiceImp {
 //    return apartmentRepository.findAllByStatus(1)
 //        .stream().map(apartmentMapper::convertToDTO).collect(Collectors.toList());
   }
+
+  @Override
+  public List<ApartmentDTO> findAllByBuildingId(Integer id) {
+    BuildingEntity building = buildingRepository.findById(id).orElseThrow(null);
+    List<ApartmentDTO> list = apartmentRepository.findAllByBuilding(building).stream().map(apartmentMapper::convertToDTO).collect(
+        Collectors.toList());
+    return list;
+  }
+
+  @Override
+  public List<ApartmentDTO> findAllByProjectId(Integer id) {
+    ProjectEntity project = projectRepository.findById(id).orElseThrow(null);
+    List<ApartmentDTO> list = apartmentRepository.findAllByBuildingProject(project).stream().map(apartmentMapper::convertToDTO).collect(
+        Collectors.toList());
+    return list;
+  }
+
 
   @Override
   public ApartmentDTO findById(Integer id) {
