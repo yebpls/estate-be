@@ -8,5 +8,8 @@ import java.util.List;
 public interface BuildingServiceImp {
   BuildingDTO findById(Integer id);
   List<BuildingDTO> findAllBuilding();
-  BuildingDTO createBuilding(BuildingDTO buildingDTO);
+  void createBuilding(BuildingDTO buildingDTO);
+  void updateBuilding(BuildingDTO buildingDTO);
+
+  boolean deleteBuilding(Integer id);
 }

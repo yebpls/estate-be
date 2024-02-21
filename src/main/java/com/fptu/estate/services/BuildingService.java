@@ -36,9 +36,29 @@ public class BuildingService implements BuildingServiceImp {
             .map(buildingMapper::convertToDTO)
             .collect(Collectors.toList());
   }
-  public BuildingDTO createBuilding(BuildingDTO buildingDTO) {
+  public void createBuilding(BuildingDTO buildingDTO) {
     BuildingEntity buildingEntity = buildingMapper.revertToEntity(buildingDTO);
-    BuildingEntity savedBuilding = buildingRepository.save(buildingEntity);
-    return buildingMapper.convertToDTO(savedBuilding);
+    try {
+      buildingRepository.save(buildingEntity);
+    } catch (Exception e) {
+        throw new RuntimeException("Error create apartment" + e.getMessage());
+    }
+  }
+  public void updateBuilding(BuildingDTO buildingDTO) {
+    BuildingEntity buildingEntity = buildingMapper.revertToEntity(buildingDTO);
+    try {
+      buildingRepository.save(buildingEntity);
+    } catch (Exception e) {
+      throw new RuntimeException("Error create apartment" + e.getMessage());
+    }
+  }
+  public boolean deleteBuilding(Integer id) {
+    BuildingEntity buildingEntity = buildingRepository.findById(id).orElseThrow();
+    if(buildingEntity != null) {
+      buildingRepository.deleteById(id);
+      return true;
+    } else {
+      return false;
+    }
   }
 }

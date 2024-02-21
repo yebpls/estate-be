@@ -9,12 +9,18 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import java.util.List;
-
-import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin
@@ -25,10 +31,10 @@ public class ApartmentController {
 
   @Operation(summary = "Get all apartments")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Load Apartments List", content = @Content(schema = @Schema(implementation = ApartmentDTO.class))),
-      @ApiResponse(responseCode = "404", description = "Not found"),
-      @ApiResponse(responseCode = "400", description = "Bad request"),
-      @ApiResponse(responseCode = "500", description = "Internal error")
+          @ApiResponse(responseCode = "200", description = "Load Apartments List", content = @Content(schema = @Schema(implementation = ApartmentDTO.class))),
+          @ApiResponse(responseCode = "404", description = "Not found"),
+          @ApiResponse(responseCode = "400", description = "Bad request"),
+          @ApiResponse(responseCode = "500", description = "Internal error")
   })
   @GetMapping("")
   public ResponseEntity<?> findAll(){
@@ -42,10 +48,10 @@ public class ApartmentController {
 
   @Operation(summary = "Get apartment details by ID")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Load Apartment", content = @Content(schema = @Schema(implementation = ApartmentDTO.class))),
-      @ApiResponse(responseCode = "404", description = "Not found"),
-      @ApiResponse(responseCode = "400", description = "Bad request"),
-      @ApiResponse(responseCode = "500", description = "Internal error")
+          @ApiResponse(responseCode = "200", description = "Load Apartment", content = @Content(schema = @Schema(implementation = ApartmentDTO.class))),
+          @ApiResponse(responseCode = "404", description = "Not found"),
+          @ApiResponse(responseCode = "400", description = "Bad request"),
+          @ApiResponse(responseCode = "500", description = "Internal error")
   })
   @GetMapping("/{id}")
   public ResponseEntity<?> findById(@Parameter(description = "Apartment ID", example = "1") @PathVariable("id") Integer id){
@@ -56,70 +62,59 @@ public class ApartmentController {
       return new ResponseEntity<>("No apartment found!!!", HttpStatus.NOT_FOUND);
     }
   }
-  @Operation(summary = "Create a new apartment")
+
+  @Operation(summary = "Update apartment by ID")
   @ApiResponses(value = {
-          @ApiResponse(responseCode = "201", description = "Apartment created successfully", content = @Content(schema = @Schema(implementation = ApartmentDTO.class))),
-          @ApiResponse(responseCode = "400", description = "Bad request"),
-          @ApiResponse(responseCode = "500", description = "Internal error")
-  })
-  @PostMapping("/create")
-  @ResponseStatus(HttpStatus.CREATED)
-  public ResponseEntity<?> createApartment(@RequestBody ApartmentDTO newApartment) {
-    try {
-      ApartmentDTO createdApartment = apartmentServiceImp.createApartment(newApartment);
-      return ResponseEntity.status(HttpStatus.CREATED).body(createdApartment);
-    } catch (Exception e) {
-      return new ResponseEntity<>("Failed to create apartment: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-  }
-  @Operation(summary = "Update apartment details by ID")
-  @ApiResponses(value = {
-          @ApiResponse(responseCode = "200", description = "Apartment updated successfully", content = @Content(schema = @Schema(implementation = ApartmentDTO.class))),
-          @ApiResponse(responseCode = "404", description = "Apartment not found"),
+          @ApiResponse(responseCode = "201", description = "Update Apartment Successfully!!!"),
+          @ApiResponse(responseCode = "404", description = "Not found"),
           @ApiResponse(responseCode = "400", description = "Bad request"),
           @ApiResponse(responseCode = "500", description = "Internal error")
   })
   @PutMapping("/{id}")
-  public ResponseEntity<?> updateApartment(
-          @Parameter(description = "Apartment ID") @PathVariable("id") Integer id,
-          @RequestBody ApartmentDTO updatedApartment) {
+  public ResponseEntity<?> updateApartmentById(@Parameter(description = "Apartment ID", example = "1") @PathVariable("id") Integer id, @RequestBody ApartmentDTO apartmentDTO){
     try {
-      // Set the ID of the updated apartment based on the path variable
-      updatedApartment.setId(id);
-
-      // Call the service method to update the apartment
-      ApartmentDTO apartment = apartmentServiceImp.updateApartment(updatedApartment);
-
-      return ResponseEntity.ok(apartment);
-
-    }
-    catch (NotFoundException e) {
-      return new ResponseEntity<>("Apartment not found", HttpStatus.NOT_FOUND);
-    }
-    catch (Exception e) {
-      // Other exceptions
-      return new ResponseEntity<>("Failed to update apartment: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+      ApartmentDTO apartment = apartmentServiceImp.findById(id);
+      if(apartment != null) {
+        apartmentServiceImp.update(apartmentDTO);
+      } else {
+        return new ResponseEntity<>("No apartment found!!!", HttpStatus.NOT_FOUND);
+      }
+      return ResponseEntity.ok("Update successfully");
+    } catch (Exception e) {
+      return new ResponseEntity<>("No apartment found!!!", HttpStatus.NOT_FOUND);
     }
   }
-  @Operation(summary = "Delete apartment by ID")
+
+  @Operation(summary = "Create apartment")
   @ApiResponses(value = {
-          @ApiResponse(responseCode = "204", description = "Apartment deleted successfully"),
-          @ApiResponse(responseCode = "404", description = "Apartment not found"),
+          @ApiResponse(responseCode = "201", description = "Create Apartment!!!"),
+          @ApiResponse(responseCode = "404", description = "Not found"),
           @ApiResponse(responseCode = "400", description = "Bad request"),
           @ApiResponse(responseCode = "500", description = "Internal error")
   })
-  @DeleteMapping("/{id}")
-  public ResponseEntity<?> deleteApartment(
-          @Parameter(description = "Apartment ID", example = "1") @PathVariable("id") Integer id) {
+  @PostMapping("/create")
+  public ResponseEntity<?> createApartment(@RequestBody ApartmentDTO apartmentDTO){
     try {
-      apartmentServiceImp.deleteApartment(id);
-      return ResponseEntity.noContent().build(); // 204 No Content
-    } catch (NotFoundException e) {
-      // Apartment not found
-      return new ResponseEntity<>("Apartment not found", HttpStatus.NOT_FOUND);
+      apartmentServiceImp.create(apartmentDTO);
+      return ResponseEntity.ok("Create successfully");
     } catch (Exception e) {
-      // Other exceptions
-      return new ResponseEntity<>("Failed to delete apartment: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+      return new ResponseEntity<>("No apartment found!!!", HttpStatus.NOT_FOUND);
+    }
+  }
+
+  @Operation(summary = "Delete existing apartment")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "Apartment deleted"),
+          @ApiResponse(responseCode = "404", description = "Not found"),
+          @ApiResponse(responseCode = "400", description = "Bad request"),
+          @ApiResponse(responseCode = "500", description = "Internal error")
+  })
+  @DeleteMapping("/delete/{id}")
+  public ResponseEntity<?> deleteApartment(@PathVariable("id") Integer id) {
+    if (apartmentServiceImp.deleteById(id)) {
+      return new ResponseEntity<>("Product deleted successfully", HttpStatus.OK);
+    } else {
+      return new ResponseEntity<>("Product deleted failed", HttpStatus.BAD_REQUEST);
     }
   }
 }
