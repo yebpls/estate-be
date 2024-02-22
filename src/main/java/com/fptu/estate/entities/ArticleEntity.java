@@ -35,6 +35,9 @@ public class ArticleEntity implements Serializable {
   @Column(name = "status")
   private Integer status;
 
+  @Column(name = "main_image")
+  private String mainImage;
+
   @ManyToOne
   @JsonManagedReference
   @JoinColumn(name = "city_id")

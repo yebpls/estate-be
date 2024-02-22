@@ -1,5 +1,6 @@
 package com.fptu.estate.security;
 
+import com.fptu.estate.entities.AccountEntity;
 import com.fptu.estate.entities.UserEntity;
 import com.fptu.estate.services.imp.LoginServiceImp;
 import java.util.ArrayList;
@@ -24,10 +25,10 @@ public class CustomAuthenProvider implements AuthenticationProvider {
   public Authentication authenticate(Authentication authentication) throws AuthenticationException {
     String email = (String) authentication.getPrincipal();
     String password = (String) authentication.getCredentials();
-    UserEntity userEntity = loginServiceImp.checkLogin(email,password);
-    if (userEntity != null) {
+    AccountEntity account = loginServiceImp.checkLogin(email,password);
+    if (account != null) {
       List<GrantedAuthority> listRoles = new ArrayList<>();
-      SimpleGrantedAuthority role = new SimpleGrantedAuthority(userEntity.getRole());
+      SimpleGrantedAuthority role = new SimpleGrantedAuthority(account.getRole());
       listRoles.add(role);
       UsernamePasswordAuthenticationToken authenticationToken =
           new UsernamePasswordAuthenticationToken("", "",listRoles);

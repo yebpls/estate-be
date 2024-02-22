@@ -20,4 +20,6 @@ public class ArticleDTO {
   private Integer cityId;
 
   private Integer agencyId;
+
+  private String mainImage;
 }

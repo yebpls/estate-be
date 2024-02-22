@@ -52,15 +52,15 @@ public class JwtFilter extends OncePerRequestFilter {
         //Tạo ra customType để Gson hỗ trợ parse JSON kiểu List
         Type listType = new TypeToken<List<SimpleGrantedAuthority>>() {
         }.getType();
-        List<GrantedAuthority> listRoles = gson.fromJson(data, listType);
+//        List<GrantedAuthority> listRoles = gson.fromJson(data, listType);
         System.out.println(data);
         //Tạo ContextHolder để bypass qua các filter của Security
-        if (data != null) {
-          UsernamePasswordAuthenticationToken authenticationToken =
-              new UsernamePasswordAuthenticationToken("", "", listRoles);
-          SecurityContext securityContext = SecurityContextHolder.getContext();
-          securityContext.setAuthentication(authenticationToken);
-        }
+//        if (data != null) {
+//          UsernamePasswordAuthenticationToken authenticationToken =
+//              new UsernamePasswordAuthenticationToken("", "", listRoles);
+//          SecurityContext securityContext = SecurityContextHolder.getContext();
+//          securityContext.setAuthentication(authenticationToken);
+//        }
 
       }
 

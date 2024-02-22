@@ -13,9 +13,15 @@ import jakarta.persistence.OneToMany;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity(name = "account")
 public class AccountEntity implements Serializable {
 
@@ -38,6 +44,9 @@ public class AccountEntity implements Serializable {
   @Column(name = "gender")
   private Integer gender;
 
+  @Column(name = "dob")
+  private Date dob;
+
   @Column(name = "create_date")
   private Date createDate;
 
@@ -48,7 +57,8 @@ public class AccountEntity implements Serializable {
   private Double balance;
 
   @Column(name = "status")
-  private boolean status;
+  private Integer status;
+
 
   @ManyToOne
   @JsonManagedReference
@@ -66,4 +76,28 @@ public class AccountEntity implements Serializable {
   @OneToMany(mappedBy = "account")
   @JsonBackReference
   private List<CustomerEntity> customers;
+
+  private String name;
+
+
+  public AccountEntity(Integer id, String password, String email, String avatarUrl, String role,
+      Integer gender, Date dob, Date createDate, Date updateDate, Double balance, Integer status,
+      CityEntity city, String name) {
+    this.id = id;
+    this.password = password;
+    this.email = email;
+    this.avatarUrl = avatarUrl;
+    this.role = role;
+    this.gender = gender;
+    this.dob = dob;
+    this.createDate = createDate;
+    this.updateDate = updateDate;
+    this.balance = balance;
+    this.status = status;
+    this.city = city;
+    this.name = name;
+  }
+
+
+
 }

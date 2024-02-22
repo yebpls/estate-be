@@ -41,4 +41,7 @@ public class ProjectEntity {
   @OneToMany(mappedBy = "project")
   @JsonBackReference
   private List<BuildingEntity> buildings;
+
+  private String image;
+
 }

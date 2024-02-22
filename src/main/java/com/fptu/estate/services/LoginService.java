@@ -1,7 +1,7 @@
 package com.fptu.estate.services;
 
-import com.fptu.estate.entities.UserEntity;
-import com.fptu.estate.repository.UserRepository;
+import com.fptu.estate.entities.AccountEntity;
+import com.fptu.estate.repository.AccountRepository;
 import com.fptu.estate.services.imp.LoginServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,17 +13,17 @@ public class LoginService implements LoginServiceImp {
   private PasswordEncoder passwordEncoder;
 
   @Autowired
-  private UserRepository userRepository;
+  private AccountRepository accountRepository;
 
   @Override
-  public UserEntity checkLogin(String email, String password) {
-    UserEntity userEntity = userRepository.findByEmail(email);
+  public AccountEntity checkLogin(String email, String password) {
+    AccountEntity account = accountRepository.findByEmail(email);
 
-    if(userEntity != null && passwordEncoder.matches(password, userEntity.getPassword())){
-      return userEntity;
+    if(account != null && passwordEncoder.matches(password, account.getPassword())){
+      return account;
     }
 
-    System.out.println(userEntity);
+    System.out.println(account);
     return null;
   }
 }
