@@ -20,7 +20,7 @@ public class InvestorService implements InvestorServiceImp {
 
   @Override
   public InvestorDTO findInvestorById(Integer id) {
-    AccountEntity account = accountRepository.findByIdAndStatus(id, 1);
+    AccountEntity account = accountRepository.findByIdAndStatus(id, true);
     InvestorDTO investorDTO = investorMapper.convertToDTO(investorRepository.findByAccount(account));
     if(investorDTO != null){
       return investorDTO;

@@ -22,7 +22,7 @@ public class AgencyService implements AgencyServiceImp {
 
   @Override
   public AgencyDTO findAgencyById(Integer id) {
-    AccountEntity account = accountRepository.findByIdAndStatus(id, 1);
+    AccountEntity account = accountRepository.findByIdAndStatus(id, true);
     AgencyDTO agencyDTO = agencyMapper.convertToDTO(agencyRepository.findByAccount(account)) ;
     if(agencyDTO !=null){
       return agencyDTO;

@@ -8,6 +8,7 @@ import com.fptu.estate.entities.AgencyEntity;
 import com.fptu.estate.entities.CityEntity;
 import com.fptu.estate.entities.CustomerEntity;
 import com.fptu.estate.entities.InvestorEntity;
+import com.fptu.estate.mapper.AccountMapper;
 import com.fptu.estate.repository.AccountRepository;
 import com.fptu.estate.repository.AgencyRepository;
 import com.fptu.estate.repository.CustomerRepository;
@@ -16,6 +17,8 @@ import com.fptu.estate.services.imp.AccountServiceImp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -44,6 +47,9 @@ public class AccountService implements AccountServiceImp {
   @Autowired
   private ModelMapper modelMapper;
 
+  @Autowired
+  private AccountMapper accountMapper;
+
 
   @Override
   public boolean checkAvailableAccount(String email) {
@@ -53,8 +59,24 @@ public class AccountService implements AccountServiceImp {
   }
 
   @Override
+  public boolean changeStatus(Integer id) {
+
+    return accountRepository.findById(id).map(account -> {
+      boolean status = account.isStatus();
+      account.setStatus(!status);
+      accountRepository.save(account);
+      return true;
+    }).orElse(false);
+  }
+
+  @Override
+  public List<AccountDTO> getAll() {
+    return accountRepository.findAll().stream().map(accountMapper::convertToDTO).collect(Collectors.toList());
+  }
+
+  @Override
   public AccountDTO findById(Integer id) {
-    AccountEntity account = accountRepository.findByIdAndStatus(id, 1);
+    AccountEntity account = accountRepository.findByIdAndStatus(id, true);
     if(account != null) {
       return modelMapper.map(account, AccountDTO.class);
     } else {
@@ -75,7 +97,7 @@ public class AccountService implements AccountServiceImp {
       AccountEntity account = accountRepository.save(new AccountEntity
           (null, passwordEncoder.encode(accountRegisterRequest.getPassword()),
               accountRegisterRequest.getEmail(), avatarURL, accountRegisterRequest.getRole(),
-              1,accountRegisterRequest.getDob(),date, date, 0.0, 0, city, accountRegisterRequest.getName())) ;
+              1,accountRegisterRequest.getDob(),date, date, 0.0, false, city, accountRegisterRequest.getName())) ;
       if(account.getRole().matches("CUSTOMER")){
         CustomerEntity customer = customerRepository.save(new CustomerEntity(null, account));
       }

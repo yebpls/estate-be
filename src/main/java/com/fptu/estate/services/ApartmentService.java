@@ -66,7 +66,6 @@ public class ApartmentService implements ApartmentServiceImp {
         Collectors.toList());
   }
 
-
   @Override
   public ApartmentDTO findById(Integer id) {
     ApartmentDTO apartment = apartmentMapper.convertToDTO(apartmentRepository.findById(id).orElseThrow(null)) ;

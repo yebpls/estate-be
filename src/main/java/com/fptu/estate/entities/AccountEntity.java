@@ -57,7 +57,7 @@ public class AccountEntity implements Serializable {
   private Double balance;
 
   @Column(name = "status")
-  private Integer status;
+  private boolean status;
 
 
   @ManyToOne
@@ -81,7 +81,7 @@ public class AccountEntity implements Serializable {
 
 
   public AccountEntity(Integer id, String password, String email, String avatarUrl, String role,
-      Integer gender, Date dob, Date createDate, Date updateDate, Double balance, Integer status,
+      Integer gender, Date dob, Date createDate, Date updateDate, Double balance, boolean status,
       CityEntity city, String name) {
     this.id = id;
     this.password = password;
