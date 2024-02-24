@@ -20,6 +20,8 @@ import lombok.Data;
 
     private Double balance;
 
+    private Date dob;
+
     private boolean status;
 
     private Integer cityId;

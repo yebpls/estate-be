@@ -12,6 +12,8 @@ public interface AccountServiceImp {
 
   List<AccountDTO> getAll();
 
+  void UpdateAccount(AccountDTO accountDTO) throws Exception;
+
   AccountDTO createAccount(AccountRegisterRequest accountRegisterRequest);
 
   AccountDTO findById(Integer id);
