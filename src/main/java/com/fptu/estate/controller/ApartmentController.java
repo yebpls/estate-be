@@ -45,6 +45,23 @@ public class ApartmentController {
       return ResponseEntity.ok(list);
     }
   }
+
+  @Operation(summary = "Get all available apartments")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Load Apartments List", content = @Content(schema = @Schema(implementation = ApartmentDTO.class))),
+      @ApiResponse(responseCode = "404", description = "Not found"),
+      @ApiResponse(responseCode = "400", description = "Bad request"),
+      @ApiResponse(responseCode = "500", description = "Internal error")
+  })
+  @GetMapping("/available")
+  public ResponseEntity<?> findAllAvailable(){
+    List<ApartmentDTO> list = apartmentServiceImp.findApartmentsByStatuses();
+    if (list.isEmpty()) {
+      return new ResponseEntity<>("No apartment found!!!", HttpStatus.NOT_FOUND);
+    } else {
+      return ResponseEntity.ok(list);
+    }
+  }
   @Operation(summary = "Get all apartments By Building ID")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Load Apartments List", content = @Content(schema = @Schema(implementation = ApartmentDTO.class))),
@@ -62,7 +79,7 @@ public class ApartmentController {
     }
   }
 
-  @Operation(summary = "Get all apartments By Building ID")
+  @Operation(summary = "Get all apartments By Project ID")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Load Apartments List", content = @Content(schema = @Schema(implementation = ApartmentDTO.class))),
       @ApiResponse(responseCode = "404", description = "Not found"),

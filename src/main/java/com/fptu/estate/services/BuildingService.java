@@ -24,6 +24,13 @@ public class BuildingService implements BuildingServiceImp {
   private ProjectRepository projectRepository;
 
   @Override
+  public List<BuildingDTO> findAll() {
+    List<BuildingDTO> list = buildingRepository.findAll().stream().map(buildingMapper::convertToDTO).collect(
+        Collectors.toList());
+    return list;
+  }
+
+  @Override
   public BuildingDTO findById(Integer id) {
     BuildingEntity building =buildingRepository.findById(id).orElse(null);
     BuildingDTO buildingDTO = buildingMapper.convertToDTO(building);

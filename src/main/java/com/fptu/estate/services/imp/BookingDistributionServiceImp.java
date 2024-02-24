@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface BookingDistributionServiceImp {
   List<BookingDistributionDTO> getAllByAgencyId(Integer id);
+
+  void createBookingDistribution(BookingDistributionDTO bookingDistributionDTO);
 }

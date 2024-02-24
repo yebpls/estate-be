@@ -9,9 +9,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ApartmentRepository extends JpaRepository<ApartmentEntity, Integer> {
-  List<ApartmentEntity> findAllByStatus(Integer status);
+//  List<ApartmentEntity> findAllByStatus(Integer status);
+List<ApartmentEntity> findAllByStatusIn(List<Integer> statuses);
 
-  ApartmentEntity findByIdAndStatus(Integer id, Integer status);
+//  ApartmentEntity findByIdAndStatus(Integer id, Integer status);
 
   List<ApartmentEntity> findAllByBuilding(BuildingEntity building);
 

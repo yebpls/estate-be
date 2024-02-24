@@ -10,6 +10,7 @@ import com.fptu.estate.repository.ApartmentRepository;
 import com.fptu.estate.repository.BuildingRepository;
 import com.fptu.estate.repository.ProjectRepository;
 import com.fptu.estate.services.imp.ApartmentServiceImp;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class ApartmentService implements ApartmentServiceImp {
 
   @Override
   public List<ApartmentDTO> findAll() {
-    List<ApartmentEntity> apartments = apartmentRepository.findAllByStatus(1);
+    List<ApartmentEntity> apartments = apartmentRepository.findAll();
     return apartments.stream()
         .map(apartmentMapper::convertToDTO)
         .collect(Collectors.toList());
@@ -57,10 +58,18 @@ public class ApartmentService implements ApartmentServiceImp {
     return list;
   }
 
+  @Override
+  public List<ApartmentDTO> findApartmentsByStatuses() {
+    List<Integer> statuses = Arrays.asList(1, 2);
+    // Use the repository method to find apartments
+    return apartmentRepository.findAllByStatusIn(statuses).stream().map(apartmentMapper::convertToDTO).collect(
+        Collectors.toList());
+  }
+
 
   @Override
   public ApartmentDTO findById(Integer id) {
-    ApartmentDTO apartment = apartmentMapper.convertToDTO(apartmentRepository.findByIdAndStatus(id, 1)) ;
+    ApartmentDTO apartment = apartmentMapper.convertToDTO(apartmentRepository.findById(id).orElseThrow(null)) ;
     return apartment;
   }
 
@@ -76,6 +85,7 @@ public class ApartmentService implements ApartmentServiceImp {
 
   @Override
   public void create(ApartmentDTO apartmentDTO) {
+    apartmentDTO.setStatus(1);
     ApartmentEntity apartment = apartmentMapper.revertToEntity(apartmentDTO);
     try {
       apartmentRepository.save(apartment);

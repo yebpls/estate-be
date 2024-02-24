@@ -27,6 +27,23 @@ public class BuildingController {
   @Autowired
   private BuildingServiceImp buildingServiceImp;
 
+  @Operation(summary = "Get all buildings")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Load Building", content = @Content(schema = @Schema(implementation = BuildingDTO.class))),
+      @ApiResponse(responseCode = "404", description = "Not found"),
+      @ApiResponse(responseCode = "400", description = "Bad request"),
+      @ApiResponse(responseCode = "500", description = "Internal error")
+  })
+  @GetMapping("")
+  public ResponseEntity<?> getAllBuildingByProjectId (){
+    try {
+      List<BuildingDTO> list = buildingServiceImp.findAll();
+      return ResponseEntity.ok(list);
+    } catch (Exception e) {
+      return new ResponseEntity<>("No building found!!!", HttpStatus.NOT_FOUND);
+    }
+  }
+
   @Operation(summary = "Get building details by ID")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Load Building", content = @Content(schema = @Schema(implementation = BuildingDTO.class))),
