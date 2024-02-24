@@ -10,7 +10,9 @@ public interface ApartmentServiceImp {
 
   List<ApartmentDTO> findApartmentsByStatuses();
   ApartmentDTO findById(Integer id);
+
   void update(ApartmentDTO apartmentDTO);
   void create(ApartmentDTO apartmentDTO);
   boolean deleteById(Integer id);
+
 }

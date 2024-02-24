@@ -72,6 +72,7 @@ public class ApartmentService implements ApartmentServiceImp {
     return apartment;
   }
 
+
   @Override
   public void update(ApartmentDTO apartmentDTO) {
     ApartmentEntity apartment = apartmentMapper.revertToEntity(apartmentDTO);
@@ -103,4 +104,5 @@ public class ApartmentService implements ApartmentServiceImp {
       return false;
     }
   }
+
 }
