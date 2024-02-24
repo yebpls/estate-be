@@ -15,4 +15,6 @@ public interface ApartmentServiceImp {
   void create(ApartmentDTO apartmentDTO);
   boolean deleteById(Integer id);
 
+  List<ApartmentDTO> findAllApartmentCanBuy();
+
 }

@@ -7,5 +7,8 @@ import java.util.List;
 public interface BookingDistributionServiceImp {
   List<BookingDistributionDTO> getAllByAgencyId(Integer id);
 
+  List<BookingDistributionDTO> getAllByStatus(Integer status);
+
+
   void createBookingDistribution(BookingDistributionDTO bookingDistributionDTO);
 }

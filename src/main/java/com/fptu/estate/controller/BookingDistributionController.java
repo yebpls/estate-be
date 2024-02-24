@@ -64,4 +64,21 @@ public class BookingDistributionController {
       throw new RuntimeException("Create error!!!" + e.getMessage());
     }
   }
+
+  @Operation(summary = "Get All Booking Distribution by status")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Load BookingDistribution List", content = @Content(schema = @Schema(implementation = BookingDistributionDTO.class))),
+      @ApiResponse(responseCode = "404", description = "Not found"),
+      @ApiResponse(responseCode = "403", description = "Bad request"),
+      @ApiResponse(responseCode = "500", description = "Internal error")
+  })
+  @GetMapping("/status/{status}")
+  public ResponseEntity<?> findAllByStatus(@PathVariable("status") Integer status){
+    try {
+      List<BookingDistributionDTO> list = bookingDistributionServiceImp.getAllByStatus(status);
+      return ResponseEntity.ok(list);
+    } catch (Exception e) {
+      return new ResponseEntity<>("No booking found!!!", HttpStatus.NOT_FOUND);
+    }
+  }
 }

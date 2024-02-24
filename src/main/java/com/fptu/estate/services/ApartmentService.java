@@ -2,11 +2,13 @@ package com.fptu.estate.services;
 
 import com.fptu.estate.DTO.ApartmentDTO;
 import com.fptu.estate.entities.ApartmentEntity;
+import com.fptu.estate.entities.BookingDistributionEntity;
 import com.fptu.estate.entities.BuildingEntity;
 import com.fptu.estate.entities.ProjectEntity;
 import com.fptu.estate.mapper.ApartmentMapper;
 import com.fptu.estate.repository.ApartmentImageRepository;
 import com.fptu.estate.repository.ApartmentRepository;
+import com.fptu.estate.repository.BookingDistributionRepository;
 import com.fptu.estate.repository.BuildingRepository;
 import com.fptu.estate.repository.ProjectRepository;
 import com.fptu.estate.services.imp.ApartmentServiceImp;
@@ -31,6 +33,8 @@ public class ApartmentService implements ApartmentServiceImp {
   private BuildingRepository buildingRepository;
   @Autowired
   private ProjectRepository projectRepository;
+  @Autowired
+  private BookingDistributionRepository bookingDistributionRepository;
 
   @Override
   public List<ApartmentDTO> findAll() {
@@ -103,6 +107,14 @@ public class ApartmentService implements ApartmentServiceImp {
     } else {
       return false;
     }
+  }
+
+  @Override
+  public List<ApartmentDTO> findAllApartmentCanBuy() {
+//    List<BookingDistributionEntity> listBooking = bookingDistributionRepository.findAllByBookingStatus(2);
+      return apartmentRepository.findAllByBookingDistributions().stream().map(apartmentMapper::convertToDTO).collect(
+          Collectors.toList());
+
   }
 
 }

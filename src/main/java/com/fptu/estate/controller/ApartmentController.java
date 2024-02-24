@@ -171,4 +171,20 @@ public class ApartmentController {
     }
   }
 
+  @Operation(summary = "Get all can buy apartments")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Load Apartments List", content = @Content(schema = @Schema(implementation = ApartmentDTO.class))),
+      @ApiResponse(responseCode = "404", description = "Not found"),
+      @ApiResponse(responseCode = "400", description = "Bad request"),
+      @ApiResponse(responseCode = "500", description = "Internal error")
+  })
+  @GetMapping("/can-buy")
+  public ResponseEntity<?> findAllCanBuy(){
+    List<ApartmentDTO> list = apartmentServiceImp.findAllApartmentCanBuy();
+    if (list.isEmpty()) {
+      return new ResponseEntity<>("No apartment found!!!", HttpStatus.NOT_FOUND);
+    } else {
+      return ResponseEntity.ok(list);
+    }
+  }
 }

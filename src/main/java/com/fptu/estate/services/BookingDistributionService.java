@@ -35,6 +35,13 @@ public class BookingDistributionService implements BookingDistributionServiceImp
   }
 
   @Override
+  public List<BookingDistributionDTO> getAllByStatus(Integer status) {
+    return bookingDistributionRepository.findAllByBookingStatus(status).stream().map(bookingDistributionMapper::convertToDTO).collect(
+        Collectors.toList());
+
+  }
+
+  @Override
   public void createBookingDistribution(BookingDistributionDTO bookingDistributionDTO) {
     BookingDistributionEntity bookingDistribution = bookingDistributionMapper.revertToEntity(bookingDistributionDTO);
     ApartmentEntity apartment = apartmentRepository.findById(bookingDistributionDTO.getApartmentId()).orElseThrow(null) ;
