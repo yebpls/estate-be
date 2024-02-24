@@ -10,4 +10,6 @@ public interface AccountRepository extends JpaRepository<AccountEntity, Integer>
 
   AccountEntity findByIdAndStatus(Integer id, Integer status);
 
+
+
 }

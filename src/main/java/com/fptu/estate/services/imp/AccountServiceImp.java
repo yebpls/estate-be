@@ -10,4 +10,7 @@ public interface AccountServiceImp {
   AccountDTO createAccount(AccountRegisterRequest accountRegisterRequest);
 
   AccountDTO findById(Integer id);
+
+  void UpdateAccount(AccountDTO accountDTO) throws Exception;
+
 }

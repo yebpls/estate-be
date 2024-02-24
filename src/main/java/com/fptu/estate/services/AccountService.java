@@ -12,10 +12,13 @@ import com.fptu.estate.repository.AccountRepository;
 import com.fptu.estate.repository.AgencyRepository;
 import com.fptu.estate.repository.CustomerRepository;
 import com.fptu.estate.repository.InvestorRepository;
+import com.fptu.estate.security.RequestAuth;
 import com.fptu.estate.services.imp.AccountServiceImp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.Optional;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -91,6 +94,19 @@ public class AccountService implements AccountServiceImp {
       return null;
     }
   }
+  @Override
+  public void UpdateAccount(AccountDTO accountDTO) throws Exception {
+    Optional<AccountEntity> accountUpdate = RequestAuth.getAccountDetails();
+    if (accountUpdate.isEmpty()) throw new Exception("User Not Found");
 
+    accountUpdate.get().setPassword(accountDTO.getPassword());
+    accountUpdate.get().setEmail(accountDTO.getEmail());
+    accountUpdate.get().setAvatarUrl(accountDTO.getAvatarUrl());
+    accountUpdate.get().setRole(accountDTO.getRole());
+    accountUpdate.get().setGender(accountDTO.getGender());
+    accountUpdate.get().setBalance(accountDTO.getBalance());
+    accountUpdate.get().setName(accountDTO.getName());
+    accountRepository.save(accountUpdate.get());
+  }
 
 }

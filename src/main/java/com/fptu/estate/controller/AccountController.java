@@ -2,22 +2,20 @@ package com.fptu.estate.controller;
 
 import com.fptu.estate.DTO.AccountDTO;
 import com.fptu.estate.DTO.AccountRegisterRequest;
+import com.fptu.estate.security.ValidatorUtils;
 import com.fptu.estate.services.imp.AccountServiceImp;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @RestController
 @CrossOrigin
@@ -26,6 +24,7 @@ public class AccountController {
 
   @Autowired
   private AccountServiceImp accountServiceImp;
+  private ValidatorUtils validatorUtil;
 
   @Operation(summary = "Create new Account")
   @ApiResponses(value = {
@@ -58,6 +57,27 @@ public class AccountController {
     } catch (Exception e) {
       return new ResponseEntity<>("No account found!!!", HttpStatus.NOT_FOUND);
     }
+  }
+  @Operation(summary = "Update account details")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "Load Account", content = @Content(schema = @Schema(implementation = AccountDTO.class))),
+          @ApiResponse(responseCode = "404", description = "Not found"),
+          @ApiResponse(responseCode = "400", description = "Bad request"),
+          @ApiResponse(responseCode = "500", description = "Internal error")
+  })
+  @PostMapping("/update")
+  public String accountDetailPost(@Valid @ModelAttribute AccountDTO accountDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    if (bindingResult.hasErrors()) {
+      redirectAttributes.addFlashAttribute("error", validatorUtil.handleValidationErrors(bindingResult.getFieldErrors()).entrySet().iterator().next().getValue());
+      return "redirect:/update";
+    }
+    try{
+      accountServiceImp.UpdateAccount(accountDTO);
+      redirectAttributes.addFlashAttribute("success", "Update Success!");
+    } catch (Exception e) {
+        throw new RuntimeException(e);
+    }
+    return "redirect:/update";
   }
 
 }
