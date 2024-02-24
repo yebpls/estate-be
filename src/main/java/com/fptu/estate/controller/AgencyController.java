@@ -1,5 +1,6 @@
 package com.fptu.estate.controller;
 
+import com.fptu.estate.DTO.AccountDTO;
 import com.fptu.estate.DTO.AgencyDTO;
 import com.fptu.estate.services.imp.AgencyServiceImp;
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,6 +36,22 @@ public class AgencyController {
     try {
       AgencyDTO agencyDTO = agencyServiceImp.findAgencyById(id);
       return ResponseEntity.ok(agencyDTO);
+    } catch (Exception e) {
+      return new ResponseEntity<>("No agency found!!!", HttpStatus.NOT_FOUND);
+    }
+  }
+  @Operation(summary = "Get agency details by Apartment ID")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Load Agency", content = @Content(schema = @Schema(implementation = AgencyDTO.class))),
+      @ApiResponse(responseCode = "404", description = "Not found"),
+      @ApiResponse(responseCode = "400", description = "Bad request"),
+      @ApiResponse(responseCode = "500", description = "Internal error")
+  })
+  @GetMapping("/apartment/{id}")
+  public ResponseEntity<?> getAgencyByApartmentId (@PathVariable("id") Integer id){
+    try {
+      AccountDTO accountDTO = agencyServiceImp.findAgencyByApartmentId(id);
+      return ResponseEntity.ok(accountDTO);
     } catch (Exception e) {
       return new ResponseEntity<>("No agency found!!!", HttpStatus.NOT_FOUND);
     }
