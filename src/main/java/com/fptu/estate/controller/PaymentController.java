@@ -20,6 +20,8 @@ import java.util.TimeZone;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,25 +29,25 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/payment")
 public class PaymentController {
 
-  @GetMapping("/create_payment")
-  public ResponseEntity<?> createPayment(HttpServletRequest req) throws UnsupportedEncodingException {
+  @PostMapping("/create_payment")
+  public ResponseEntity<?> createPayment(HttpServletRequest req, @RequestBody long amount) throws UnsupportedEncodingException {
 
     String orderType = "other";
 //    long amount = Integer.parseInt(req.getParameter("amount"))*100;
 //    String bankCode = req.getParameter("bankCode");
-    long amount = 1000000;
+
 
 
     ConfigVNPay Config;
     String vnp_TxnRef = ConfigVNPay.getRandomNumber(8);
-    String vnp_IpAddr = "127.0.0.1";
+    String vnp_IpAddr = ConfigVNPay.getIpAddress(req);
     String vnp_TmnCode = ConfigVNPay.vnp_TmnCode;
 
     Map<String, String> vnp_Params = new HashMap<>();
     vnp_Params.put("vnp_Version", ConfigVNPay.vnp_Version);
     vnp_Params.put("vnp_Command", ConfigVNPay.vnp_Command);
     vnp_Params.put("vnp_TmnCode", vnp_TmnCode);
-    vnp_Params.put("vnp_Amount", String.valueOf(amount));
+    vnp_Params.put("vnp_Amount", String.valueOf(amount * 100));
     vnp_Params.put("vnp_CurrCode", "VND");
     vnp_Params.put("vnp_BankCode", "NCB");
     vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
