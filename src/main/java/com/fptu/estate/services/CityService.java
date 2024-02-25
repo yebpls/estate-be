@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,6 +23,9 @@ public class CityService implements CityServiceImp {
 
   @Override
   public List<CityDTO> findAllCity() {
-    return cityRepository.findAll().stream().map(cityMapper::convertToDTO).collect(Collectors.toList());
+    Sort sortByName = Sort.by("cityName").ascending();
+    return cityRepository.findAll(sortByName).stream()
+        .map(cityMapper::convertToDTO)
+        .collect(Collectors.toList());
   }
 }
