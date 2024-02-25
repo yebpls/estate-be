@@ -2,6 +2,7 @@ package com.fptu.estate.controller;
 
 import com.fptu.estate.DTO.AccountDTO;
 import com.fptu.estate.DTO.AccountRegisterRequest;
+import com.fptu.estate.DTO.BuildingDTO;
 import com.fptu.estate.services.imp.AccountServiceImp;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -24,6 +25,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -83,6 +86,27 @@ public class AccountController {
     try {
       AccountDTO accountDTO = accountServiceImp.findById(id);
       return ResponseEntity.ok(accountDTO);
+    } catch (Exception e) {
+      return new ResponseEntity<>("No account found!!!", HttpStatus.NOT_FOUND);
+    }
+  }
+  @Operation(summary = "Update account details")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "Load Account", content = @Content(schema = @Schema(implementation = AccountDTO.class))),
+          @ApiResponse(responseCode = "404", description = "Not found"),
+          @ApiResponse(responseCode = "400", description = "Bad request"),
+          @ApiResponse(responseCode = "500", description = "Internal error")
+  })
+  @PutMapping("/{id}")
+  public ResponseEntity<?> updateAccountById(@PathVariable("id") Integer id) {
+    try {
+      AccountDTO account = accountServiceImp.findById(id);
+      if(account != null) {
+        accountServiceImp.UpdateAccount(account);
+      } else {
+        return new ResponseEntity<>("No account found!!!", HttpStatus.NOT_FOUND);
+      }
+      return ResponseEntity.ok("Update successfully");
     } catch (Exception e) {
       return new ResponseEntity<>("No account found!!!", HttpStatus.NOT_FOUND);
     }

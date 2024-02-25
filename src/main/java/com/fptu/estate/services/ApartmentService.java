@@ -112,9 +112,9 @@ public class ApartmentService implements ApartmentServiceImp {
   @Override
   public List<ApartmentDTO> findAllApartmentCanBuy() {
 //    List<BookingDistributionEntity> listBooking = bookingDistributionRepository.findAllByBookingStatus(2);
-      return apartmentRepository.findAllByBookingDistributions().stream().map(apartmentMapper::convertToDTO).collect(
-          Collectors.toList());
+    return apartmentRepository.findAllByBookingDistributions().stream()
+        .map(apartmentMapper::convertToDTO).collect(
+            Collectors.toList());
 
   }
-
 }

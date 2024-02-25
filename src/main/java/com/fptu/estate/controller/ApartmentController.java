@@ -187,4 +187,5 @@ public class ApartmentController {
       return ResponseEntity.ok(list);
     }
   }
+
 }
