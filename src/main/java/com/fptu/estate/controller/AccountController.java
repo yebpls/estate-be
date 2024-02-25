@@ -74,22 +74,7 @@ public class AccountController {
     }
   }
 
-  @Operation(summary = "Get account details by ID")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Load Account", content = @Content(schema = @Schema(implementation = AccountDTO.class))),
-      @ApiResponse(responseCode = "404", description = "Not found"),
-      @ApiResponse(responseCode = "400", description = "Bad request"),
-      @ApiResponse(responseCode = "500", description = "Internal error")
-  })
-  @GetMapping("/{id}")
-  public ResponseEntity<?> getAccountById (@PathVariable("id") Integer id){
-    try {
-      AccountDTO accountDTO = accountServiceImp.findById(id);
-      return ResponseEntity.ok(accountDTO);
-    } catch (Exception e) {
-      return new ResponseEntity<>("No account found!!!", HttpStatus.NOT_FOUND);
-    }
-  }
+
   @Operation(summary = "Update account details")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "Load Account", content = @Content(schema = @Schema(implementation = AccountDTO.class))),
@@ -129,26 +114,6 @@ public class AccountController {
     }
   }
 
-  @Operation(summary = "Update account details")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Load Account", content = @Content(schema = @Schema(implementation = AccountDTO.class))),
-      @ApiResponse(responseCode = "404", description = "Not found"),
-      @ApiResponse(responseCode = "400", description = "Bad request"),
-      @ApiResponse(responseCode = "500", description = "Internal error")
-  })
-  @PostMapping("/update")
-  public String accountDetailPost(@Valid @ModelAttribute AccountDTO accountDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-    if (bindingResult.hasErrors()) {
-      redirectAttributes.addFlashAttribute("error", validatorUtil.handleValidationErrors(bindingResult.getFieldErrors()).entrySet().iterator().next().getValue());
-      return "redirect:/update";
-    }
-    try{
-      accountServiceImp.UpdateAccount(accountDTO);
-      redirectAttributes.addFlashAttribute("success", "Update Success!");
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
-    return "redirect:/update";
-  }
+
 
 }
