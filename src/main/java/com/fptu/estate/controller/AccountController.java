@@ -2,7 +2,7 @@ package com.fptu.estate.controller;
 
 import com.fptu.estate.DTO.AccountDTO;
 import com.fptu.estate.DTO.AccountRegisterRequest;
-import com.fptu.estate.security.ValidatorUtils;
+import com.fptu.estate.DTO.BuildingDTO;
 import com.fptu.estate.services.imp.AccountServiceImp;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -24,7 +24,6 @@ public class AccountController {
 
   @Autowired
   private AccountServiceImp accountServiceImp;
-  private ValidatorUtils validatorUtil;
 
   @Operation(summary = "Create new Account")
   @ApiResponses(value = {
@@ -65,19 +64,19 @@ public class AccountController {
           @ApiResponse(responseCode = "400", description = "Bad request"),
           @ApiResponse(responseCode = "500", description = "Internal error")
   })
-  @PostMapping("/update")
-  public String accountDetailPost(@Valid @ModelAttribute AccountDTO accountDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-    if (bindingResult.hasErrors()) {
-      redirectAttributes.addFlashAttribute("error", validatorUtil.handleValidationErrors(bindingResult.getFieldErrors()).entrySet().iterator().next().getValue());
-      return "redirect:/update";
-    }
-    try{
-      accountServiceImp.UpdateAccount(accountDTO);
-      redirectAttributes.addFlashAttribute("success", "Update Success!");
+  @PutMapping("/{id}")
+  public ResponseEntity<?> updateAccountById(@PathVariable("id") Integer id) {
+    try {
+      AccountDTO account = accountServiceImp.findById(id);
+      if(account != null) {
+        accountServiceImp.UpdateAccount(account);
+      } else {
+        return new ResponseEntity<>("No account found!!!", HttpStatus.NOT_FOUND);
+      }
+      return ResponseEntity.ok("Update successfully");
     } catch (Exception e) {
-        throw new RuntimeException(e);
+      return new ResponseEntity<>("No account found!!!", HttpStatus.NOT_FOUND);
     }
-    return "redirect:/update";
   }
 
 }

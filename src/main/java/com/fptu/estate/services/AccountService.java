@@ -3,16 +3,12 @@ package com.fptu.estate.services;
 
 import com.fptu.estate.DTO.AccountDTO;
 import com.fptu.estate.DTO.AccountRegisterRequest;
-import com.fptu.estate.entities.AccountEntity;
-import com.fptu.estate.entities.AgencyEntity;
-import com.fptu.estate.entities.CityEntity;
-import com.fptu.estate.entities.CustomerEntity;
-import com.fptu.estate.entities.InvestorEntity;
+import com.fptu.estate.entities.*;
+import com.fptu.estate.mapper.AccountMapper;
 import com.fptu.estate.repository.AccountRepository;
 import com.fptu.estate.repository.AgencyRepository;
 import com.fptu.estate.repository.CustomerRepository;
 import com.fptu.estate.repository.InvestorRepository;
-import com.fptu.estate.security.RequestAuth;
 import com.fptu.estate.services.imp.AccountServiceImp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -43,6 +39,9 @@ public class AccountService implements AccountServiceImp {
 
   @Autowired
   private AgencyRepository agencyRepository;
+
+  @Autowired
+  private AccountMapper accountMapper;
 
   @Autowired
   private ModelMapper modelMapper;
@@ -96,17 +95,12 @@ public class AccountService implements AccountServiceImp {
   }
   @Override
   public void UpdateAccount(AccountDTO accountDTO) throws Exception {
-    Optional<AccountEntity> accountUpdate = RequestAuth.getAccountDetails();
-    if (accountUpdate.isEmpty()) throw new Exception("User Not Found");
-
-    accountUpdate.get().setPassword(accountDTO.getPassword());
-    accountUpdate.get().setEmail(accountDTO.getEmail());
-    accountUpdate.get().setAvatarUrl(accountDTO.getAvatarUrl());
-    accountUpdate.get().setRole(accountDTO.getRole());
-    accountUpdate.get().setGender(accountDTO.getGender());
-    accountUpdate.get().setBalance(accountDTO.getBalance());
-    accountUpdate.get().setName(accountDTO.getName());
-    accountRepository.save(accountUpdate.get());
+    AccountEntity accountEntity = accountMapper.revertToEntity(accountDTO);
+    try {
+      accountRepository.save(accountEntity);
+    } catch (Exception e) {
+      throw new RuntimeException("Error create apartment" + e.getMessage());
+    }
   }
 
 }
