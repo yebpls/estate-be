@@ -41,7 +41,7 @@ public class AccountController {
   private ValidatorUtils validatorUtil;
 
 
-  @Operation(summary = "Get account details by ID")
+  @Operation(summary = "Get all account details ")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Load Account", content = @Content(schema = @Schema(implementation = AccountDTO.class))),
       @ApiResponse(responseCode = "404", description = "Not found"),
@@ -53,6 +53,23 @@ public class AccountController {
     try {
       List<AccountDTO> list = accountServiceImp.getAll();
       return ResponseEntity.ok(list);
+    } catch (Exception e) {
+      return new ResponseEntity<>("No account found!!!", HttpStatus.NOT_FOUND);
+    }
+  }
+
+  @Operation(summary = "Get  account details by ID")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Load Account", content = @Content(schema = @Schema(implementation = AccountDTO.class))),
+      @ApiResponse(responseCode = "404", description = "Not found"),
+      @ApiResponse(responseCode = "400", description = "Bad request"),
+      @ApiResponse(responseCode = "500", description = "Internal error")
+  })
+  @GetMapping("/{id}")
+  public ResponseEntity<?> getById (@PathVariable("id") Integer id){
+    try {
+      AccountDTO accountDTO = accountServiceImp.findById(id);
+      return ResponseEntity.ok(accountDTO);
     } catch (Exception e) {
       return new ResponseEntity<>("No account found!!!", HttpStatus.NOT_FOUND);
     }

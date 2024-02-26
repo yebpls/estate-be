@@ -5,6 +5,7 @@ import com.fptu.estate.config.ConfigVNPay;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -30,7 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class PaymentController {
 
   @PostMapping("/create_payment")
-  public ResponseEntity<?> createPayment(HttpServletRequest req, @RequestBody long amount) throws UnsupportedEncodingException {
+  public ResponseEntity<?> createPayment(HttpServletRequest req, HttpServletResponse res, @RequestBody long amount) throws UnsupportedEncodingException {
 
     String orderType = "other";
 //    long amount = Integer.parseInt(req.getParameter("amount"))*100;
@@ -97,6 +98,7 @@ public class PaymentController {
     paymentRestDTO.setStatus("Ok");
     paymentRestDTO.setMessage("Successfully");
     paymentRestDTO.setURL(paymentUrl);
+//    res.setDateHeader("HEADER_START" ,vnp_CreateDate);
     return ResponseEntity.status(HttpStatus.OK).body(paymentRestDTO) ;
   }
 }
