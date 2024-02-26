@@ -28,4 +28,5 @@ public class CityService implements CityServiceImp {
         .map(cityMapper::convertToDTO)
         .collect(Collectors.toList());
   }
+
 }

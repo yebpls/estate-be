@@ -101,11 +101,11 @@ public class BuildingController {
           @ApiResponse(responseCode = "500", description = "Internal error")
   })
   @PutMapping("/{id}")
-  public ResponseEntity<?> updateBuildingById(@Parameter(description = "Apartment ID", example = "1") @PathVariable("id") Integer id, @RequestBody ApartmentDTO apartmentDTO){
+  public ResponseEntity<?> updateBuildingById(@Parameter(description = "Apartment ID", example = "1") @PathVariable("id") Integer id, @RequestBody BuildingDTO buildingDTO){
     try {
       BuildingDTO building = buildingServiceImp.findById(id);
       if(building != null) {
-        buildingServiceImp.updateBuilding(building);
+        buildingServiceImp.updateBuilding(buildingDTO);
       } else {
         return new ResponseEntity<>("No building found!!!", HttpStatus.NOT_FOUND);
       }
