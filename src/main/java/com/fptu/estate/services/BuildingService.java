@@ -5,8 +5,10 @@ import com.fptu.estate.DTO.BuildingDTO;
 import com.fptu.estate.entities.ApartmentEntity;
 import com.fptu.estate.entities.ApartmentImageEntity;
 import com.fptu.estate.entities.BuildingEntity;
+import com.fptu.estate.entities.ProjectEntity;
 import com.fptu.estate.mapper.BuildingMapper;
 import com.fptu.estate.repository.BuildingRepository;
+import com.fptu.estate.repository.ProjectRepository;
 import com.fptu.estate.services.imp.BuildingServiceImp;
 
 import java.util.List;
@@ -23,6 +25,8 @@ public class BuildingService implements BuildingServiceImp {
 
   @Autowired
   private BuildingMapper buildingMapper;
+  @Autowired
+  private ProjectRepository projectRepository;
 
   @Override
   public List<BuildingDTO> findAll() {
@@ -67,5 +71,13 @@ public class BuildingService implements BuildingServiceImp {
     } else {
       return false;
     }
+  }
+
+  @Override
+  public List<BuildingDTO> findAllByProjectId(Integer id) {
+    ProjectEntity project = projectRepository.findById(id).orElseThrow();
+    List<BuildingDTO> list = buildingRepository.findAllByProject(project).stream().map(buildingMapper::convertToDTO).collect(
+        Collectors.toList());
+    return list;
   }
 }

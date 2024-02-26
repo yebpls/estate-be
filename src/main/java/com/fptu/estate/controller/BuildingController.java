@@ -32,7 +32,7 @@ public class BuildingController {
       @ApiResponse(responseCode = "500", description = "Internal error")
   })
   @GetMapping("")
-  public ResponseEntity<?> getAllBuildingByProjectId (){
+  public ResponseEntity<?> getAllBuilding (){
     try {
       List<BuildingDTO> list = buildingServiceImp.findAll();
       return ResponseEntity.ok(list);
@@ -40,6 +40,24 @@ public class BuildingController {
       return new ResponseEntity<>("No building found!!!", HttpStatus.NOT_FOUND);
     }
   }
+
+  @Operation(summary = "Get all buildings by project")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Load Building", content = @Content(schema = @Schema(implementation = BuildingDTO.class))),
+      @ApiResponse(responseCode = "404", description = "Not found"),
+      @ApiResponse(responseCode = "400", description = "Bad request"),
+      @ApiResponse(responseCode = "500", description = "Internal error")
+  })
+  @GetMapping("/project/{id}")
+  public ResponseEntity<?> getAllBuildingByProjectId (@PathVariable("id") Integer id){
+    try {
+      List<BuildingDTO> list = buildingServiceImp.findAllByProjectId(id);
+      return ResponseEntity.ok(list);
+    } catch (Exception e) {
+      return new ResponseEntity<>("No building found!!!", HttpStatus.NOT_FOUND);
+    }
+  }
+
 
   @Operation(summary = "Get building details by ID")
   @ApiResponses(value = {

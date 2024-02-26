@@ -13,4 +13,7 @@ public interface BuildingServiceImp {
   void updateBuilding(BuildingDTO buildingDTO);
 
   boolean deleteBuilding(Integer id);
+
+  List<BuildingDTO> findAllByProjectId(Integer id);
+
 }
