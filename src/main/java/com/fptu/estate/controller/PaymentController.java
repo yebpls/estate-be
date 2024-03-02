@@ -2,6 +2,7 @@ package com.fptu.estate.controller;
 
 import com.fptu.estate.DTO.PaymentRestDTO;
 import com.fptu.estate.config.ConfigVNPay;
+import com.fptu.estate.services.imp.AccountServiceImp;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,9 +19,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,14 +33,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/payment")
 public class PaymentController {
 
-  @PostMapping("/create_payment")
-  public ResponseEntity<?> createPayment(HttpServletRequest req, HttpServletResponse res, @RequestBody long amount) throws UnsupportedEncodingException {
+  @Autowired
+  AccountServiceImp accountServiceImp;
+
+  @PostMapping("/create_payment/{amount}")
+  public ResponseEntity<?> createPayment(HttpServletRequest req, HttpServletResponse res,
+      @PathVariable("amount") long amount) throws UnsupportedEncodingException {
 
     String orderType = "other";
 //    long amount = Integer.parseInt(req.getParameter("amount"))*100;
 //    String bankCode = req.getParameter("bankCode");
-
-
 
     ConfigVNPay Config;
     String vnp_TxnRef = ConfigVNPay.getRandomNumber(8);
@@ -53,7 +58,7 @@ public class PaymentController {
     vnp_Params.put("vnp_BankCode", "NCB");
     vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
     vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang:" + vnp_TxnRef);
-      vnp_Params.put("vnp_Locale", "vn");
+    vnp_Params.put("vnp_Locale", "vn");
     vnp_Params.put("vnp_OrderType", orderType);
     vnp_Params.put("vnp_ReturnUrl", ConfigVNPay.vnp_ReturnUrl);
     vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
@@ -99,6 +104,25 @@ public class PaymentController {
     paymentRestDTO.setMessage("Successfully");
     paymentRestDTO.setURL(paymentUrl);
 //    res.setDateHeader("HEADER_START" ,vnp_CreateDate);
-    return ResponseEntity.status(HttpStatus.OK).body(paymentRestDTO) ;
+    return ResponseEntity.status(HttpStatus.OK).body(paymentRestDTO);
+  }
+
+
+  @PostMapping("/set-payment/{accId}/{amount}")
+  public ResponseEntity<?> createPayment(@PathVariable("accId") Integer accId,
+      @PathVariable("amount") Double amount) {
+    boolean isOk = accountServiceImp.updatePayment(accId, amount);
+    if(isOk){
+      return new ResponseEntity<>("Update payment successfully!", HttpStatus.OK);
+    }else{
+      return new ResponseEntity<>("Update payment fail!", HttpStatus.BAD_REQUEST);
+    }
+//    try {
+//      accountServiceImp.updatePayment(accId, amount);
+//      return new ResponseEntity<>("Update payment successfully!", HttpStatus.OK);
+//    } catch (Exception e) {
+//      return new ResponseEntity<>("Update payment fail!", HttpStatus.BAD_REQUEST);
+//
+//    }
   }
 }

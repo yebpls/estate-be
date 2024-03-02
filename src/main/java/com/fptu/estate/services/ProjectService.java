@@ -63,7 +63,7 @@ public class ProjectService implements ProjectServiceImp {
   @Override
   public boolean deleteProjectById(Integer id) {
     ProjectEntity project = projectRepository.findById(id).orElseThrow(null);
-    if(project != null){
+    if(project != null && project.getStatus() == 0){
       projectRepository.deleteById(id);
       return true;
     }
