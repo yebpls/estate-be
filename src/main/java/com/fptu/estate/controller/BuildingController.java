@@ -105,29 +105,29 @@ public class BuildingController {
   @PostMapping("/create")
   public ResponseEntity<?> createBuilding(@RequestBody BuildingDTO buildingDTO) {
     try {
-      buildingServiceImp.createBuilding(buildingDTO);
-      return ResponseEntity.ok("Create Successfully");
+      BuildingDTO buildingDTO1 = buildingServiceImp.createBuilding(buildingDTO);
+      return ResponseEntity.ok(buildingDTO1);
     } catch (Exception e) {
       return new ResponseEntity<>("No building found!!!", HttpStatus.NOT_FOUND);
     }
   }
-  @Operation(summary = "Update apartment by ID")
+  @Operation(summary = "Update building by ID")
   @ApiResponses(value = {
-          @ApiResponse(responseCode = "201", description = "Update Apartment Successfully!!!"),
+          @ApiResponse(responseCode = "201", description = "Update Building Successfully!!!"),
           @ApiResponse(responseCode = "404", description = "Not found"),
           @ApiResponse(responseCode = "400", description = "Bad request"),
           @ApiResponse(responseCode = "500", description = "Internal error")
   })
   @PutMapping("/{id}")
-  public ResponseEntity<?> updateBuildingById(@Parameter(description = "Apartment ID", example = "1") @PathVariable("id") Integer id, @RequestBody ApartmentDTO apartmentDTO){
+  public ResponseEntity<?> updateBuildingById(@Parameter(description = "Apartment ID", example = "1") @PathVariable("id") Integer id, @RequestBody BuildingDTO buildingDTO){
     try {
       BuildingDTO building = buildingServiceImp.findById(id);
       if(building != null) {
-        buildingServiceImp.updateBuilding(building);
+        BuildingDTO buildingDTO1 = buildingServiceImp.updateBuilding(buildingDTO);
+        return ResponseEntity.ok(buildingDTO1);
       } else {
         return new ResponseEntity<>("No building found!!!", HttpStatus.NOT_FOUND);
       }
-      return ResponseEntity.ok("Update successfully");
     } catch (Exception e) {
       return new ResponseEntity<>("No building found!!!", HttpStatus.NOT_FOUND);
     }

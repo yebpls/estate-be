@@ -126,13 +126,11 @@ public class ApartmentController {
   @PutMapping("/{id}")
   public ResponseEntity<?> updateApartmentById(@Parameter(description = "Apartment ID", example = "1") @PathVariable("id") Integer id, @RequestBody ApartmentDTO apartmentDTO){
     try {
-      ApartmentDTO apartment = apartmentServiceImp.findById(id);
-      if(apartment != null) {
-        apartmentServiceImp.update(apartmentDTO);
-      } else {
-        return new ResponseEntity<>("No apartment found!!!", HttpStatus.NOT_FOUND);
-      }
-      return ResponseEntity.ok("Update successfully");
+
+        ApartmentDTO apartmentDTO1 = apartmentServiceImp.update(id, apartmentDTO);
+        return ResponseEntity.ok(apartmentDTO1);
+
+
     } catch (Exception e) {
       return new ResponseEntity<>("No apartment found!!!", HttpStatus.NOT_FOUND);
     }
@@ -148,8 +146,8 @@ public class ApartmentController {
   @PostMapping("/create")
   public ResponseEntity<?> createApartment(@RequestBody ApartmentDTO apartmentDTO){
     try {
-        apartmentServiceImp.create(apartmentDTO);
-      return ResponseEntity.ok("Create successfully");
+      ApartmentDTO apartmentDTO1 = apartmentServiceImp.create(apartmentDTO);
+      return ResponseEntity.ok(apartmentDTO1);
     } catch (Exception e) {
       return new ResponseEntity<>("No apartment found!!!", HttpStatus.NOT_FOUND);
     }

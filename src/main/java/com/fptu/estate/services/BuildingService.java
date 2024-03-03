@@ -5,6 +5,7 @@ import com.fptu.estate.DTO.BuildingDTO;
 import com.fptu.estate.entities.ApartmentEntity;
 import com.fptu.estate.entities.ApartmentImageEntity;
 import com.fptu.estate.entities.BuildingEntity;
+import com.fptu.estate.entities.CityEntity;
 import com.fptu.estate.entities.ProjectEntity;
 import com.fptu.estate.mapper.BuildingMapper;
 import com.fptu.estate.repository.BuildingRepository;
@@ -47,18 +48,27 @@ public class BuildingService implements BuildingServiceImp {
             .map(buildingMapper::convertToDTO)
             .collect(Collectors.toList());
   }
-  public void createBuilding(BuildingDTO buildingDTO) {
+  public BuildingDTO createBuilding(BuildingDTO buildingDTO) {
     BuildingEntity buildingEntity = buildingMapper.revertToEntity(buildingDTO);
     try {
       buildingRepository.save(buildingEntity);
+      BuildingDTO buildingDTO1 = buildingMapper.convertToDTO(buildingEntity);
+      return buildingDTO1;
     } catch (Exception e) {
         throw new RuntimeException("Error create apartment" + e.getMessage());
     }
   }
-  public void updateBuilding(BuildingDTO buildingDTO) {
+  public BuildingDTO updateBuilding(BuildingDTO buildingDTO) {
     BuildingEntity buildingEntity = buildingMapper.revertToEntity(buildingDTO);
     try {
+      buildingEntity.setBuildingName(buildingDTO.getBuildingName());
+      buildingEntity.setAddress(buildingDTO.getAddress());
+      CityEntity city = new CityEntity();
+      city.setId(buildingDTO.getCityId());
+      buildingEntity.setCity(city);
       buildingRepository.save(buildingEntity);
+      BuildingDTO buildingDTO1 = buildingMapper.convertToDTO(buildingEntity);
+      return buildingDTO1;
     } catch (Exception e) {
       throw new RuntimeException("Error create apartment" + e.getMessage());
     }
