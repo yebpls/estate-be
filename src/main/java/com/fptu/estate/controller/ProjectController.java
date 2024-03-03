@@ -75,8 +75,8 @@ public class ProjectController {
   @PostMapping("/create")
   public ResponseEntity<?> createProject(@RequestBody ProjectDTO projectDTO){
     try {
-      projectServiceImp.createProject(projectDTO);
-      return ResponseEntity.ok("Create successfully");
+      ProjectDTO projectDTO1 = projectServiceImp.createProject(projectDTO);
+      return ResponseEntity.ok(projectDTO1);
     } catch (Exception e) {
       return new ResponseEntity<>("Error!!!", HttpStatus.NOT_FOUND);
     }
@@ -92,13 +92,10 @@ public class ProjectController {
   @PutMapping("/update/{id}")
   public ResponseEntity<?> updateApartmentById(@Parameter(description = "Project ID", example = "1") @PathVariable("id") Integer id, @RequestBody ProjectDTO projectDTO){
     try {
-      ProjectDTO project = projectServiceImp.findByProjectId(id);
-      if(project != null) {
-        projectServiceImp.updateProject(id, projectDTO);
-      } else {
-        return new ResponseEntity<>("No project found!!!", HttpStatus.NOT_FOUND);
-      }
-      return ResponseEntity.ok("Update successfully");
+
+        ProjectDTO projectDTO1 = projectServiceImp.updateProject(id, projectDTO);
+        return ResponseEntity.ok(projectDTO1);
+
     } catch (Exception e) {
       return new ResponseEntity<>("No project found!!!", HttpStatus.NOT_FOUND);
     }

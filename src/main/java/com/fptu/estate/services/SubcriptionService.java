@@ -64,7 +64,7 @@ public class SubcriptionService implements SubcriptionServiceImp {
       SubscriptionDTO subscriptionDTO = subscriptionMapper.convertToDTO(subscription) ;
       return subscriptionDTO;
     } catch (Exception e){
-      System.out.println("Error at createSubcription: " + e.getMessage());
+      System.out.println("Error at change status subscription: " + e.getMessage());
       return null;
     }
   }

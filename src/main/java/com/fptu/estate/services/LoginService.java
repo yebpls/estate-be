@@ -21,6 +21,8 @@ public class LoginService implements LoginServiceImp {
 
     if(account != null && passwordEncoder.matches(password, account.getPassword()) && account.isStatus()){
       return account;
+    } else if (account != null && passwordEncoder.matches(password, account.getPassword()) && !account.isStatus()) {
+      return account;
     }
 
     System.out.println(account);

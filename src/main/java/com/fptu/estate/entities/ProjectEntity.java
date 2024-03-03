@@ -31,7 +31,7 @@ public class ProjectEntity {
   private Date endDate;
 
   @Column(name = "status")
-  private int status;
+  private Integer status;
 
   @ManyToOne
   @JsonManagedReference

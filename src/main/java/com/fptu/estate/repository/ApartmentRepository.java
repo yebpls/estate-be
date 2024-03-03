@@ -18,6 +18,12 @@ public interface ApartmentRepository extends JpaRepository<ApartmentEntity, Inte
   List<ApartmentEntity> findAllByBookingDistributions();
 
 
+  @Query(value = "SELECT a.*\n"
+      + "  FROM apartment a\n"
+      + "  JOIN building b ON a.building_id = b.id\n"
+      + "  JOIN project p ON b.project_id = p.id\n"
+      + "  WHERE p.id = ?1",  nativeQuery = true)
+  List<ApartmentEntity> findAllByProjectId(Integer projectId);
   List<ApartmentEntity> findAllByBuilding(BuildingEntity building);
 
   List<ApartmentEntity> findAllByBuildingProject(ProjectEntity project);
