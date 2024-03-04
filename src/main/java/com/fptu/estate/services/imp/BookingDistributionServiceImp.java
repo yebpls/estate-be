@@ -10,5 +10,5 @@ public interface BookingDistributionServiceImp {
   List<BookingDistributionDTO> getAllByStatus(Integer status);
 
 
-  void createBookingDistribution(BookingDistributionDTO bookingDistributionDTO);
+  BookingDistributionDTO createBookingDistribution(BookingDistributionDTO bookingDistributionDTO);
 }

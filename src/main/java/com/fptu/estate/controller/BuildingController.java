@@ -121,13 +121,10 @@ public class BuildingController {
   @PutMapping("/{id}")
   public ResponseEntity<?> updateBuildingById(@Parameter(description = "Building ID", example = "1") @PathVariable("id") Integer id, @RequestBody BuildingDTO buildingDTO){
     try {
-      BuildingDTO building = buildingServiceImp.findById(id);
-      if(building != null) {
-        BuildingDTO buildingDTO1 = buildingServiceImp.updateBuilding(buildingDTO);
+
+        BuildingDTO buildingDTO1 = buildingServiceImp.updateBuilding(id ,buildingDTO);
         return ResponseEntity.ok(buildingDTO1);
-      } else {
-        return new ResponseEntity<>("No building found!!!", HttpStatus.NOT_FOUND);
-      }
+
     } catch (Exception e) {
       return new ResponseEntity<>("No building found!!!", HttpStatus.NOT_FOUND);
     }

@@ -10,7 +10,7 @@ public interface BuildingServiceImp {
   BuildingDTO findById(Integer id);
   List<BuildingDTO> findAllBuilding();
   BuildingDTO createBuilding(BuildingDTO buildingDTO);
-  BuildingDTO updateBuilding(BuildingDTO buildingDTO);
+  BuildingDTO updateBuilding(Integer id, BuildingDTO buildingDTO);
 
   boolean deleteBuilding(Integer id);
 
