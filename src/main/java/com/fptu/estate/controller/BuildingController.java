@@ -32,7 +32,7 @@ public class BuildingController {
       @ApiResponse(responseCode = "500", description = "Internal error")
   })
   @GetMapping("")
-  public ResponseEntity<?> getAllBuildingByProjectId (){
+  public ResponseEntity<?> getAllBuilding (){
     try {
       List<BuildingDTO> list = buildingServiceImp.findAll();
       return ResponseEntity.ok(list);
@@ -87,42 +87,39 @@ public class BuildingController {
   @PostMapping("/create")
   public ResponseEntity<?> createBuilding(@RequestBody BuildingDTO buildingDTO) {
     try {
-      buildingServiceImp.createBuilding(buildingDTO);
-      return ResponseEntity.ok("Create Successfully");
+      BuildingDTO buildingDTO1 = buildingServiceImp.createBuilding(buildingDTO);
+      return ResponseEntity.ok(buildingDTO1);
     } catch (Exception e) {
       return new ResponseEntity<>("No building found!!!", HttpStatus.NOT_FOUND);
     }
   }
-  @Operation(summary = "Update apartment by ID")
+  @Operation(summary = "Update building by ID")
   @ApiResponses(value = {
-          @ApiResponse(responseCode = "201", description = "Update Apartment Successfully!!!"),
+          @ApiResponse(responseCode = "201", description = "Update Building Successfully!!!"),
           @ApiResponse(responseCode = "404", description = "Not found"),
           @ApiResponse(responseCode = "400", description = "Bad request"),
           @ApiResponse(responseCode = "500", description = "Internal error")
   })
   @PutMapping("/{id}")
-  public ResponseEntity<?> updateBuildingById(@Parameter(description = "Apartment ID", example = "1") @PathVariable("id") Integer id, @RequestBody BuildingDTO buildingDTO){
+  public ResponseEntity<?> updateBuildingById(@Parameter(description = "Building ID", example = "1") @PathVariable("id") Integer id, @RequestBody BuildingDTO buildingDTO){
     try {
-      BuildingDTO building = buildingServiceImp.findById(id);
-      if(building != null) {
-        buildingServiceImp.updateBuilding(buildingDTO);
-      } else {
-        return new ResponseEntity<>("No building found!!!", HttpStatus.NOT_FOUND);
-      }
-      return ResponseEntity.ok("Update successfully");
+
+        BuildingDTO buildingDTO1 = buildingServiceImp.updateBuilding(id ,buildingDTO);
+        return ResponseEntity.ok(buildingDTO1);
+
     } catch (Exception e) {
       return new ResponseEntity<>("No building found!!!", HttpStatus.NOT_FOUND);
     }
   }
-  @Operation(summary = "Delete existing apartment")
+  @Operation(summary = "Delete existing Building")
   @ApiResponses(value = {
-          @ApiResponse(responseCode = "200", description = "Apartment deleted"),
+          @ApiResponse(responseCode = "200", description = "Building deleted"),
           @ApiResponse(responseCode = "404", description = "Not found"),
           @ApiResponse(responseCode = "400", description = "Bad request"),
           @ApiResponse(responseCode = "500", description = "Internal error")
   })
   @DeleteMapping("/delete/{id}")
-  public ResponseEntity<?> deleteApartment(@PathVariable("id") Integer id) {
+  public ResponseEntity<?> deleteBuilding(@PathVariable("id") Integer id) {
     if (buildingServiceImp.deleteBuilding(id)) {
       return new ResponseEntity<>("Building deleted successfully", HttpStatus.OK);
     } else {

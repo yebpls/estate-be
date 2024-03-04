@@ -75,11 +75,18 @@ public class LoginController {
       Authentication authentication = authenticationManager.authenticate(token);
       logger.info("authentication: " + authentication);
       String json = gson.toJson(authentication.getAuthorities());
-      AccountEntity account = loginServiceImp.checkLogin(email, password);
-      String jwtToken = jwtService.generateToken(account.getRole(), account);
-      BaseResponse baseResponse = new BaseResponse();
-      baseResponse.setData(jwtToken);
-      return new ResponseEntity<>(baseResponse, HttpStatus.OK);
+      AccountEntity account = (AccountEntity) loginServiceImp.checkLogin(email, password);
+      if(!account.isStatus()){
+//        String jwtToken = jwtService.generateToken(account.getRole(), account);
+        BaseResponse baseResponse = new BaseResponse();
+        baseResponse.setMessage("Tài khoản chưa đăng ký hoặc chưa được kích hoạt");
+        return new ResponseEntity<>(baseResponse, HttpStatus.BAD_REQUEST);
+      } else {
+        String jwtToken = jwtService.generateToken(account.getRole(), account);
+        BaseResponse baseResponse = new BaseResponse();
+        baseResponse.setData(jwtToken);
+        return new ResponseEntity<>(baseResponse, HttpStatus.OK);
+      }
 
   }
 

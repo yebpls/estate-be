@@ -14,7 +14,7 @@ public class ProjectDTO implements Serializable {
 
   private Date endDate;
 
-  private int status;
+  private Integer status;
 
   private Integer investorId;
 

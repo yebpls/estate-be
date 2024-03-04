@@ -19,7 +19,9 @@ public class LoginService implements LoginServiceImp {
   public AccountEntity checkLogin(String email, String password) {
     AccountEntity account = accountRepository.findByEmail(email);
 
-    if(account != null && passwordEncoder.matches(password, account.getPassword())){
+    if(account != null && passwordEncoder.matches(password, account.getPassword()) && account.isStatus()){
+      return account;
+    } else if (account != null && passwordEncoder.matches(password, account.getPassword()) && !account.isStatus()) {
       return account;
     }
 

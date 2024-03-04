@@ -15,6 +15,9 @@ import com.fptu.estate.services.imp.ApartmentServiceImp;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.extern.java.Log;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +38,9 @@ public class ApartmentService implements ApartmentServiceImp {
   private ProjectRepository projectRepository;
   @Autowired
   private BookingDistributionRepository bookingDistributionRepository;
+
+
+  private Logger log = LoggerFactory.getLogger(ApartmentService.class);
 
   @Override
   public List<ApartmentDTO> findAll() {
@@ -78,22 +84,92 @@ public class ApartmentService implements ApartmentServiceImp {
 
 
   @Override
-  public void update(ApartmentDTO apartmentDTO) {
-    ApartmentEntity apartment = apartmentMapper.revertToEntity(apartmentDTO);
+  public ApartmentDTO update(Integer id, ApartmentDTO apartmentDTO) {
+//    ApartmentEntity apartment = apartmentRepository.findById(id).orElseThrow(null);
+//    try {
+//      apartment.setApartmentNumber(apartmentDTO.getApartmentNumber());
+//      apartment.setLivingRoom(apartmentDTO.getLivingRoom());
+//      apartment.setBedRoom(apartmentDTO.getBedRoom());
+//      apartment.setBathRoom(apartmentDTO.getBathRoom());
+//      apartment.setKitchen(apartmentDTO.getKitchen());
+//      apartment.setPrice(apartmentDTO.getPrice());
+//      BuildingEntity building = new BuildingEntity();
+//      building.setId(apartmentDTO.getBuildingId());
+//      apartment.setBuilding(building);
+//      apartment.setStatus(apartmentDTO.getStatus());
+//      apartment.setMainImage(apartmentDTO.getMainImage());
+//      apartment.setArea(apartmentDTO.getArea());
+//      apartmentRepository.save(apartment);
+//      ApartmentDTO apartmentDTO1 = apartmentMapper.convertToDTO(apartment);
+//      return apartmentDTO1;
+//    } catch (Exception e) {
+//      throw new RuntimeException("Error update apartment " + e.getMessage());
+//    }
+    log.info("Starting update for Apartment with ID: {}", id);
+    ApartmentEntity apartment = apartmentRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Apartment not found with id: " + id));
+    log.info("Apartment found: {}", apartment);
+
     try {
+      log.info("Updating apartment details");
+      apartment.setApartmentNumber(apartmentDTO.getApartmentNumber());
+      apartment.setLivingRoom(apartmentDTO.getLivingRoom());
+      apartment.setBedRoom(apartmentDTO.getBedRoom());
+      apartment.setBathRoom(apartmentDTO.getBathRoom());
+      apartment.setKitchen(apartmentDTO.getKitchen());
+      apartment.setPrice(apartmentDTO.getPrice());
+
+      BuildingEntity building = buildingRepository.findById(apartmentDTO.getBuildingId()).orElseThrow(null);
+      apartment.setBuilding(building);
+
+      apartment.setStatus(apartmentDTO.getStatus());
+      apartment.setMainImage(apartmentDTO.getMainImage());
+      apartment.setArea(apartmentDTO.getArea());
+
       apartmentRepository.save(apartment);
+      log.info("Apartment saved successfully");
+
+      ApartmentDTO apartmentDTO1 = apartmentMapper.convertToDTO(apartment);
+      log.info("Successfully converted ApartmentEntity to ApartmentDTO: {}", apartmentDTO1);
+      return apartmentDTO1;
     } catch (Exception e) {
+      log.error("Error updating apartment with ID: {}: {}", id, e.getMessage(), e);
       throw new RuntimeException("Error update apartment " + e.getMessage());
     }
   }
 
   @Override
-  public void create(ApartmentDTO apartmentDTO) {
+  public ApartmentDTO create(ApartmentDTO apartmentDTO) {
+//    apartmentDTO.setStatus(1);
+//    ApartmentEntity apartment = apartmentMapper.revertToEntity(apartmentDTO);
+//    log.error("Error at map revert");
+//    try {
+//      apartmentRepository.save(apartment);
+//      log.error("Error at repo");
+//      ApartmentDTO apartmentDTO1 = apartmentMapper.convertToDTO(apartment);
+//      log.error("Error at map");
+//      return apartmentDTO1;
+//    } catch (Exception e) {
+//      throw new RuntimeException("Error create apartment " + e.getMessage());
+//    }
     apartmentDTO.setStatus(1);
-    ApartmentEntity apartment = apartmentMapper.revertToEntity(apartmentDTO);
+    ApartmentEntity apartment = null;
+    try {
+      apartment = apartmentMapper.revertToEntity(apartmentDTO);
+      log.info("Successfully mapped ApartmentDTO to ApartmentEntity: {}", apartment);
+    } catch (Exception e) {
+      log.error("Error during mapping from ApartmentDTO to ApartmentEntity", e);
+      throw e; // Re-throw the exception or handle it as appropriate
+    }
+
     try {
       apartmentRepository.save(apartment);
+      log.info("Apartment saved to repository: {}", apartment);
+      ApartmentDTO apartmentDTO1 = apartmentMapper.convertToDTO(apartment);
+      log.info("Successfully converted ApartmentEntity to ApartmentDTO: {}", apartmentDTO1);
+      return apartmentDTO1;
     } catch (Exception e) {
+      log.error("Error create apartment: ", e);
       throw new RuntimeException("Error create apartment " + e.getMessage());
     }
   }

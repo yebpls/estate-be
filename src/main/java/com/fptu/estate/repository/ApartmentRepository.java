@@ -13,10 +13,17 @@ import org.springframework.stereotype.Repository;
 public interface ApartmentRepository extends JpaRepository<ApartmentEntity, Integer> {
   List<ApartmentEntity> findAllByStatusIn(List<Integer> statuses);
 
+
   @Query(value = "SELECT a.* FROM apartment a JOIN bookingdistribution bd ON a.id = bd.apartment_id WHERE bd.booking_status  = 2",  nativeQuery = true)
   List<ApartmentEntity> findAllByBookingDistributions();
 
 
+  @Query(value = "SELECT a.*\n"
+      + "  FROM apartment a\n"
+      + "  JOIN building b ON a.building_id = b.id\n"
+      + "  JOIN project p ON b.project_id = p.id\n"
+      + "  WHERE p.id = ?1",  nativeQuery = true)
+  List<ApartmentEntity> findAllByProjectId(Integer projectId);
   List<ApartmentEntity> findAllByBuilding(BuildingEntity building);
 
   List<ApartmentEntity> findAllByBuildingProject(ProjectEntity project);

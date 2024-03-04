@@ -18,4 +18,6 @@ public interface AccountServiceImp {
 
   void UpdateAccount(AccountDTO accountDTO) throws Exception;
 
+  boolean updatePayment(Integer accId, Double amount);
+
 }

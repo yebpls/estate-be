@@ -6,8 +6,8 @@ import java.util.List;
 public interface ProjectServiceImp {
   List<ProjectDTO> findAllByInvestorId(Integer id);
   ProjectDTO findByProjectId(Integer id);
-  void createProject(ProjectDTO projectDTO);
-  void updateProject(Integer id, ProjectDTO projectDTO);
+  ProjectDTO createProject(ProjectDTO projectDTO);
+  ProjectDTO updateProject(Integer id, ProjectDTO projectDTO);
   boolean deleteProjectById(Integer id);
 
 }

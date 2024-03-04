@@ -7,6 +7,8 @@ import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.servers.Server;
+import java.util.Locale;
+import java.util.TimeZone;
 import javax.crypto.SecretKey;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,7 +24,15 @@ public class EstateApplication {
 //		SecretKey key = Jwts.SIG.HS256.key().build();
 //		String strKey = Encoders.BASE64.encode(key.getEncoded());
 //		System.out.println("key: " + strKey);
+		init();
+//		System.out.println(timeZone);
 		SpringApplication.run(EstateApplication.class, args);
+	}
+
+	private static void init() {
+		TimeZone timeZone = TimeZone.getTimeZone("GMT+7");
+		TimeZone.setDefault(timeZone);
+//		Locale.setDefault();
 	}
 
 }

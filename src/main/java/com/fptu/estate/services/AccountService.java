@@ -17,14 +17,13 @@ import com.fptu.estate.repository.AccountRepository;
 import com.fptu.estate.repository.AgencyRepository;
 import com.fptu.estate.repository.CustomerRepository;
 import com.fptu.estate.repository.InvestorRepository;
-import com.fptu.estate.security.RequestAuth;
+
 import com.fptu.estate.services.imp.AccountServiceImp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import java.util.Optional;
@@ -135,6 +134,29 @@ public class AccountService implements AccountServiceImp {
     } catch (Exception e) {
       throw new RuntimeException("Error create apartment" + e.getMessage());
     }
+
+  }
+
+  @Override
+  public boolean updatePayment(Integer accId, Double amount) {
+//    AccountDTO accountDTO = accountMapper.convertToDTO(accountRepository.findByIdAndStatus(accId, true));
+//    Double balance = accountDTO.getBalance();
+//    accountDTO.setBalance(balance + amount);
+//    AccountEntity account = accountMapper.revertToEntity(accountDTO);
+//    try{
+//      accountRepository.save(account);
+//    } catch (Exception e){
+//      throw new RuntimeException("Error Update Payment" + e.getMessage());
+//
+//    }
+     return accountRepository.findById(accId).map(account -> {
+      Double balance = account.getBalance();
+      Double newBalance = balance + amount;
+      account.setBalance(newBalance);
+      accountRepository.save(account);
+      return true;
+    }).orElse(false);
+
 
   }
 

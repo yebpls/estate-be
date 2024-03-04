@@ -12,8 +12,8 @@ public interface ApartmentServiceImp {
   ApartmentDTO findById(Integer id);
 
 
-  void update(ApartmentDTO apartmentDTO);
-  void create(ApartmentDTO apartmentDTO);
+  ApartmentDTO update(Integer id, ApartmentDTO apartmentDTO);
+  ApartmentDTO create(ApartmentDTO apartmentDTO);
   boolean deleteById(Integer id);
 
   List<ApartmentDTO> findAllApartmentCanBuy();
