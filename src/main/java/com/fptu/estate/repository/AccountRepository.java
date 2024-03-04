@@ -14,6 +14,4 @@ public interface AccountRepository extends JpaRepository<AccountEntity, Integer>
   @Query(value = "SELECT acc.* FROM account AS acc JOIN agency AS ag ON acc.id = ag.account_id JOIN bookingdistribution AS bd ON ag.id = bd.agency_id JOIN apartment AS apt ON bd.apartment_id = apt.id WHERE apt.id = ?1", nativeQuery = true)
   AccountEntity findAgencyInforByApartmentId(Integer apartmentId);
 
-
-
 }

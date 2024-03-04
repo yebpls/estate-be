@@ -77,6 +77,10 @@ public class AccountEntity implements Serializable {
   @JsonBackReference
   private List<CustomerEntity> customers;
 
+  @OneToMany(mappedBy = "account")
+  @JsonBackReference
+  private List<TransactionEntity> transactions;
+
   private String name;
 
 
