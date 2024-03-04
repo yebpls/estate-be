@@ -1,8 +1,10 @@
 package com.fptu.estate.controller;
 
 import com.fptu.estate.DTO.PaymentRestDTO;
+import com.fptu.estate.DTO.TransactionDTO;
 import com.fptu.estate.config.ConfigVNPay;
 import com.fptu.estate.services.imp.AccountServiceImp;
+import com.fptu.estate.services.imp.TransactionServiceImp;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,6 +37,9 @@ public class PaymentController {
 
   @Autowired
   AccountServiceImp accountServiceImp;
+
+  @Autowired
+  TransactionServiceImp transactionServiceImp;
 
   @PostMapping("/create_payment/{amount}")
   public ResponseEntity<?> createPayment(HttpServletRequest req, HttpServletResponse res,
@@ -113,6 +118,7 @@ public class PaymentController {
       @PathVariable("amount") Double amount) {
     boolean isOk = accountServiceImp.updatePayment(accId, amount);
     if(isOk){
+      TransactionDTO transactionDTO = transactionServiceImp.createRecharge(accId, amount);
       return new ResponseEntity<>("Update payment successfully!", HttpStatus.OK);
     }else{
       return new ResponseEntity<>("Update payment fail!", HttpStatus.BAD_REQUEST);

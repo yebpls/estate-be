@@ -9,6 +9,7 @@ import com.fptu.estate.entities.CityEntity;
 import com.fptu.estate.entities.ProjectEntity;
 import com.fptu.estate.mapper.BuildingMapper;
 import com.fptu.estate.repository.BuildingRepository;
+import com.fptu.estate.repository.CityRepository;
 import com.fptu.estate.repository.ProjectRepository;
 import com.fptu.estate.services.imp.BuildingServiceImp;
 
@@ -28,6 +29,8 @@ public class BuildingService implements BuildingServiceImp {
   private BuildingMapper buildingMapper;
   @Autowired
   private ProjectRepository projectRepository;
+  @Autowired
+  private CityRepository cityRepository;
 
   @Override
   public List<BuildingDTO> findAll() {
@@ -58,13 +61,13 @@ public class BuildingService implements BuildingServiceImp {
         throw new RuntimeException("Error create apartment" + e.getMessage());
     }
   }
-  public BuildingDTO updateBuilding(BuildingDTO buildingDTO) {
-    BuildingEntity buildingEntity = buildingMapper.revertToEntity(buildingDTO);
+  public BuildingDTO updateBuilding(Integer id, BuildingDTO buildingDTO) {
+    BuildingEntity buildingEntity = buildingRepository.findById(id).orElseThrow(null);
     try {
       buildingEntity.setBuildingName(buildingDTO.getBuildingName());
       buildingEntity.setAddress(buildingDTO.getAddress());
-      CityEntity city = new CityEntity();
-      city.setId(buildingDTO.getCityId());
+      CityEntity city = cityRepository.findById(buildingDTO.getCityId()).orElseThrow(null);
+//      city.setId(buildingDTO.getCityId());
       buildingEntity.setCity(city);
       buildingRepository.save(buildingEntity);
       BuildingDTO buildingDTO1 = buildingMapper.convertToDTO(buildingEntity);
