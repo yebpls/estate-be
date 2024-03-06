@@ -9,6 +9,6 @@ public interface BookingDistributionServiceImp {
 
   List<BookingDistributionDTO> getAllByStatus(Integer status);
 
-
+  boolean cancelBookingDistribution(Integer distributionId);
   BookingDistributionDTO createBookingDistribution(BookingDistributionDTO bookingDistributionDTO);
 }

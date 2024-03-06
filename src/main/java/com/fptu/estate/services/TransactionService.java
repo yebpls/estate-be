@@ -78,6 +78,18 @@ public class TransactionService implements TransactionServiceImp {
 
   @Override
   public TransactionDTO createBackToInvestor(Integer accountId, Double amount) {
-    return null;
+    TransactionEntity transaction = new TransactionEntity();
+    transaction.setAccount(accountRepository.findById(accountId).orElseThrow(null));
+    LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Bangkok")); // GMT+7 time zone
+    transaction.setTransactionDate(currentTime);
+    transaction.setStatus(2);
+    transaction.setAmount(amount);
+    try{
+      transactionRepository.save(transaction);
+      TransactionDTO transactionDTO = transactionMapper.convertToDTO(transaction);
+      return transactionDTO;
+    } catch (Exception e) {
+      return null;
+    }
   }
 }
