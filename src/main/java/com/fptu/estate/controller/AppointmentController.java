@@ -81,4 +81,23 @@ public class AppointmentController {
       return new ResponseEntity<>("Change Status fail", HttpStatus.NOT_FOUND);
     }
   }
+
+  @Operation(summary = "Get appointment detail by apartmentId")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Load Appoinment detail", content = @Content(schema = @Schema(implementation = AppointmentDTO.class))),
+      @ApiResponse(responseCode = "404", description = "Not found"),
+      @ApiResponse(responseCode = "400", description = "Bad request"),
+      @ApiResponse(responseCode = "500", description = "Internal error")
+  })
+  @GetMapping("/apartment/{apartmentId}")
+  public ResponseEntity<?> findAllAppointmentByApartmentId(
+      @Parameter(description = "Apartment ID", example = "1") @PathVariable("apartmentId") Integer id) {
+    try {
+      AppointmentDTO appointmentDTO = appointmentServiceImp.findByApartmentId(
+          id);
+      return ResponseEntity.ok(appointmentDTO);
+    } catch (Exception e) {
+      return new ResponseEntity<>("No apointment found!!!", HttpStatus.NOT_FOUND);
+    }
+  }
 }
