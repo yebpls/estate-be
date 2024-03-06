@@ -21,7 +21,7 @@ public class AgencyMapper {
   public AgencyEntity revertToEntity(AgencyDTO agencyDTO){
     AgencyEntity agency = modelMapper.map(agencyDTO, AgencyEntity.class);
     AccountEntity account = new AccountEntity();
-    account.setId(agencyDTO.getId());
+    account.setId(agencyDTO.getAccountId());
     agency.setAccount(account);
     return agency;
   }

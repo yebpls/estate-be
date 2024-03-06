@@ -99,16 +99,11 @@ public class AccountController {
           @ApiResponse(responseCode = "400", description = "Bad request"),
           @ApiResponse(responseCode = "500", description = "Internal error")
   })
-  @PutMapping("/{id}")
-  public ResponseEntity<?> updateAccountById(@PathVariable("id") Integer id) {
+  @PutMapping("/update/{id}")
+  public ResponseEntity<?> updateAccountById(@PathVariable("id") Integer id,@RequestBody AccountDTO accountDTO) {
     try {
-      AccountDTO account = accountServiceImp.findById(id);
-      if(account != null) {
-        accountServiceImp.UpdateAccount(account);
-      } else {
-        return new ResponseEntity<>("No account found!!!", HttpStatus.NOT_FOUND);
-      }
-      return ResponseEntity.ok("Update successfully");
+      AccountDTO accountDTO1 =  accountServiceImp.UpdateAccount(accountDTO, id);
+      return ResponseEntity.ok(accountDTO1);
     } catch (Exception e) {
       return new ResponseEntity<>("No account found!!!", HttpStatus.NOT_FOUND);
     }
