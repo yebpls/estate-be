@@ -14,4 +14,6 @@ public interface SubcriptionServiceImp {
 
   SubscriptionDTO changeStatus(Integer subscriptionId, Integer status);
 
+  List<SubscriptionDTO> findAllByAppointmentId(Integer apointId);
+
 }

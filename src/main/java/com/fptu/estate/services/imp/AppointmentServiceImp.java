@@ -8,4 +8,6 @@ public interface AppointmentServiceImp {
   AppointmentDTO getAppointmentByBookingDistributionId(Integer distributionId);
 
   AppointmentDTO changeStatus(Integer appointmentId);
+
+  AppointmentDTO findByApartmentId(Integer apartId);
 }

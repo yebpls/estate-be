@@ -58,4 +58,11 @@ public class AppointmentService implements AppointmentServiceImp {
     appointmentRepository.save(appointment);
     return appointmentMapper.convertToDTO(appointment);
   }
+
+  @Override
+  public AppointmentDTO findByApartmentId(Integer apartId) {
+    AppointmentEntity appointment = appointmentRepository.findByApartmentId(apartId);
+    AppointmentDTO appointmentDTO = appointmentMapper.convertToDTO(appointment);
+    return appointmentDTO;
+  }
 }
