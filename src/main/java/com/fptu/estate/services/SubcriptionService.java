@@ -81,4 +81,11 @@ public class SubcriptionService implements SubcriptionServiceImp {
       return null;
     }
   }
+
+  @Override
+  public List<SubscriptionDTO> findAllByAppointmentId(Integer apointId) {
+    AppointmentEntity appointment = appointmentRepository.findById(apointId).orElseThrow(null);
+    return subscriptionRepository.findAllByAppointment(appointment).stream().map(subscriptionMapper::convertToDTO).collect(
+        Collectors.toList());
+  }
 }

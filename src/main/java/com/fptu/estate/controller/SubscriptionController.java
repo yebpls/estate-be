@@ -63,7 +63,7 @@ public class SubscriptionController {
     }
   }
 
-  @Operation(summary = "Get subscription details by ID")
+  @Operation(summary = "Get all subscription  by customer ID")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Load Subscription", content = @Content(schema = @Schema(implementation = SubscriptionDTO.class))),
       @ApiResponse(responseCode = "404", description = "Not found"),
@@ -111,6 +111,23 @@ public class SubscriptionController {
       return ResponseEntity.ok(subscriptionDTO);
     } catch (Exception e) {
       return new ResponseEntity<>("Update status fail", HttpStatus.NOT_FOUND);
+    }
+  }
+
+  @Operation(summary = "Get all subscription by Appointment ID")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Load Subscription", content = @Content(schema = @Schema(implementation = SubscriptionDTO.class))),
+      @ApiResponse(responseCode = "404", description = "Not found"),
+      @ApiResponse(responseCode = "400", description = "Bad request"),
+      @ApiResponse(responseCode = "500", description = "Internal error")
+  })
+  @GetMapping("/appointment/{appointmentId}")
+  public ResponseEntity<?> getAllByAppointmentId(@Parameter(description = "Appointment ID", example = "1") @PathVariable("appointmentId") Integer id){
+    List<SubscriptionDTO> list = subcriptionServiceImp.findAllByAppointmentId(id);
+    if (list.isEmpty()) {
+      return new ResponseEntity<>("No subscriptions found!!!", HttpStatus.NOT_FOUND);
+    } else {
+      return ResponseEntity.ok(list);
     }
   }
 
