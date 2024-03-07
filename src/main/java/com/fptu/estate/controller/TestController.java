@@ -1,5 +1,6 @@
 package com.fptu.estate.controller;
 
+import com.fptu.estate.services.ApartmentImageService;
 import io.swagger.v3.oas.annotations.Operation;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -7,15 +8,15 @@ import java.util.Date;
 import java.util.TimeZone;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @CrossOrigin
 @RequestMapping("/test")
 public class TestController {
+
+  private ApartmentImageService apartmentImageService;
 
   @Operation(summary = "Test Server")
   @GetMapping("")
@@ -25,4 +26,15 @@ public class TestController {
     LocalDateTime localDateTime = LocalDateTime.now();
 
     return new ResponseEntity<>(localDateTime, HttpStatus.OK);}
+
+  @PostMapping("/upload")
+  public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file,
+                                            @RequestParam("apartmentId") Integer id) {
+    try {
+      apartmentImageService.uploadImage(file, id);
+      return ResponseEntity.status(HttpStatus.CREATED).body("Image uploaded successfully");
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload image: " + e.getMessage());
+    }
+  }
 }
