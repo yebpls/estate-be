@@ -15,6 +15,7 @@ import com.fptu.estate.entities.*;
 import com.fptu.estate.mapper.AccountMapper;
 import com.fptu.estate.repository.AccountRepository;
 import com.fptu.estate.repository.AgencyRepository;
+import com.fptu.estate.repository.CityRepository;
 import com.fptu.estate.repository.CustomerRepository;
 import com.fptu.estate.repository.InvestorRepository;
 
@@ -58,7 +59,8 @@ public class AccountService implements AccountServiceImp {
 
   @Autowired
   private ModelMapper modelMapper;
-
+  @Autowired
+  private CityRepository cityRepository;
 
 
   @Override
@@ -127,10 +129,17 @@ public class AccountService implements AccountServiceImp {
 
 
   @Override
-  public void UpdateAccount(AccountDTO accountDTO) throws Exception {
-    AccountEntity accountEntity = accountMapper.revertToEntity(accountDTO);
+  public AccountDTO UpdateAccount(AccountDTO accountDTO, Integer id) {
+    AccountEntity account = accountRepository.findByIdAndStatus(id, true);
     try {
-      accountRepository.save(accountEntity);
+      account.setCity(cityRepository.findById(accountDTO.getCityId()).orElseThrow(null));
+      account.setAvatarUrl(accountDTO.getAvatarUrl());
+      account.setGender(accountDTO.getGender());
+      account.setDob(accountDTO.getDob());
+      account.setName(accountDTO.getName());
+      accountRepository.save(account);
+      AccountDTO accountDTO1 = accountMapper.convertToDTO(account);
+      return accountDTO1;
     } catch (Exception e) {
       throw new RuntimeException("Error create apartment" + e.getMessage());
     }

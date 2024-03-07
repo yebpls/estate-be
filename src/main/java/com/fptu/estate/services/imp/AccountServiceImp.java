@@ -16,7 +16,7 @@ public interface AccountServiceImp {
 
   AccountDTO findById(Integer id);
 
-  void UpdateAccount(AccountDTO accountDTO) throws Exception;
+  AccountDTO UpdateAccount(AccountDTO accountDTO, Integer id) throws Exception;
 
   boolean updatePayment(Integer accId, Double amount);
 

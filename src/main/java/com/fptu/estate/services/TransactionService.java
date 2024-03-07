@@ -6,6 +6,8 @@ import com.fptu.estate.mapper.TransactionMapper;
 import com.fptu.estate.repository.AccountRepository;
 import com.fptu.estate.repository.TransactionRepository;
 import com.fptu.estate.services.imp.TransactionServiceImp;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -39,8 +41,7 @@ public class TransactionService implements TransactionServiceImp {
   public TransactionDTO createRecharge(Integer accountId, Double amount) {
     TransactionEntity transaction = new TransactionEntity();
     transaction.setAccount(accountRepository.findById(accountId).orElseThrow(null));
-    Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+7"));
-    Date currentTime = calendar.getTime();
+    LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Bangkok")); // GMT+7 time zone
     transaction.setTransactionDate(currentTime);
     transaction.setStatus(0);
     transaction.setAmount(amount);
@@ -57,8 +58,7 @@ public class TransactionService implements TransactionServiceImp {
   public TransactionDTO createDeposit(Integer accountId, Double amount) {
     TransactionEntity transaction = new TransactionEntity();
     transaction.setAccount(accountRepository.findById(accountId).orElseThrow(null));
-    Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+7"));
-    Date currentTime = calendar.getTime();
+    LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Bangkok")); // GMT+7 time zone
     transaction.setTransactionDate(currentTime);
     transaction.setStatus(1);
     transaction.setAmount(amount);
@@ -78,6 +78,18 @@ public class TransactionService implements TransactionServiceImp {
 
   @Override
   public TransactionDTO createBackToInvestor(Integer accountId, Double amount) {
-    return null;
+    TransactionEntity transaction = new TransactionEntity();
+    transaction.setAccount(accountRepository.findById(accountId).orElseThrow(null));
+    LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Bangkok")); // GMT+7 time zone
+    transaction.setTransactionDate(currentTime);
+    transaction.setStatus(2);
+    transaction.setAmount(amount);
+    try{
+      transactionRepository.save(transaction);
+      TransactionDTO transactionDTO = transactionMapper.convertToDTO(transaction);
+      return transactionDTO;
+    } catch (Exception e) {
+      return null;
+    }
   }
 }

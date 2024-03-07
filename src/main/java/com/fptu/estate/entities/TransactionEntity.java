@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import java.time.LocalDateTime;
 import java.util.Date;
 import lombok.Data;
 
@@ -19,7 +20,7 @@ public class TransactionEntity {
   private Integer id;
 
   @Column(name = "transaction_date")
-  private Date transactionDate;
+  private LocalDateTime transactionDate;
 
   @Column(name = "status")
   private Integer status;

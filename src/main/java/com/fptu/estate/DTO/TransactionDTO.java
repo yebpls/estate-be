@@ -1,5 +1,6 @@
 package com.fptu.estate.DTO;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import lombok.Data;
 
@@ -7,7 +8,7 @@ import lombok.Data;
 public class TransactionDTO {
   private Integer id;
   private Integer accountId;
-  private Date transactionDate;
+  private LocalDateTime transactionDate;
   private Integer status;
   private Double amount;
 }

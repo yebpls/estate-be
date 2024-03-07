@@ -20,7 +20,7 @@ public class InvestorMapper {
   public InvestorEntity revertToEntity(InvestorDTO investorDTO){
     InvestorEntity investor = modelMapper.map(investorDTO, InvestorEntity.class);
     AccountEntity account = new AccountEntity();
-    account.setId(investor.getId());
+    account.setId(investorDTO.getAccountId());
     investor.setAccount(account);
     return investor;
   }

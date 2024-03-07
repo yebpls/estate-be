@@ -81,4 +81,25 @@ public class BookingDistributionController {
       return new ResponseEntity<>("No booking found!!!", HttpStatus.NOT_FOUND);
     }
   }
+
+  @Operation(summary = "Cancel booking distribution")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "201", description = "Cancel Booking Distribution Successfully!!!", content = @Content(schema = @Schema(implementation = BookingDistributionDTO.class))),
+      @ApiResponse(responseCode = "404", description = "Not found"),
+      @ApiResponse(responseCode = "400", description = "Bad request"),
+      @ApiResponse(responseCode = "500", description = "Internal error")
+  })
+  @PostMapping("/cancel/{bookingId}")
+  public ResponseEntity<?> cancelBooking (@PathVariable("bookingId") Integer bookingId){
+    try {
+      boolean ok = bookingDistributionServiceImp.cancelBookingDistribution(bookingId);
+      if(ok){
+        return ResponseEntity.ok("Delete successfully!!!");
+      } else {
+        return ResponseEntity.badRequest().body("Delete fail!!!");
+      }
+    } catch (Exception e) {
+      throw new RuntimeException("Create error!!!" + e.getMessage());
+    }
+  }
 }

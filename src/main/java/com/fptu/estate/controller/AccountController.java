@@ -5,7 +5,6 @@ import com.fptu.estate.DTO.AccountRegisterRequest;
 import com.fptu.estate.DTO.BuildingDTO;
 import com.fptu.estate.services.imp.AccountServiceImp;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -100,16 +99,11 @@ public class AccountController {
           @ApiResponse(responseCode = "400", description = "Bad request"),
           @ApiResponse(responseCode = "500", description = "Internal error")
   })
-  @PutMapping("/{id}")
-  public ResponseEntity<?> updateAccountById(@Parameter(description = "AccountID", example = "1") @PathVariable("id") Integer id, @RequestBody AccountDTO accountDTO) {
+  @PutMapping("/update/{id}")
+  public ResponseEntity<?> updateAccountById(@PathVariable("id") Integer id,@RequestBody AccountDTO accountDTO) {
     try {
-      AccountDTO account = accountServiceImp.findById(id);
-      if(account != null) {
-        accountServiceImp.UpdateAccount(accountDTO);
-      } else {
-        return new ResponseEntity<>("No account found!!!", HttpStatus.NOT_FOUND);
-      }
-      return ResponseEntity.ok("Update successfully");
+      AccountDTO accountDTO1 =  accountServiceImp.UpdateAccount(accountDTO, id);
+      return ResponseEntity.ok(accountDTO1);
     } catch (Exception e) {
       return new ResponseEntity<>("No account found!!!", HttpStatus.NOT_FOUND);
     }
