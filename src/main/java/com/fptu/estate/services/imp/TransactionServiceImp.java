@@ -11,4 +11,5 @@ public interface TransactionServiceImp {
   TransactionDTO createDeposit(Integer accountId, Double amount);
   TransactionDTO createBackToAgency(Integer accountId, Double amount);
   TransactionDTO createBackToInvestor(Integer accountId, Double amount);
+  TransactionDTO createInvestorPay(Integer accountId, Double amount);
 }

@@ -91,7 +91,7 @@ public class BookingDistributionService implements BookingDistributionServiceImp
       Double backMoney = bookingDistribution.getBookingFee() * apartment.getPrice();
       //Check nếu appointment còn subscription thì ko cho huỷ
       //Nếu appointment status = 1 thì ko cho huỷ
-      if (listSubscription != null && appointment.getAppointmentStatus().equals(1)) {
+      if (!listSubscription.isEmpty() || appointment.getAppointmentStatus().equals(1)) {
         throw new RuntimeException(
             "Error at cancelBooking: còn nhiều sub hoặc appointment đã có khách hẹn");
       } else {

@@ -73,7 +73,20 @@ public class TransactionService implements TransactionServiceImp {
 
   @Override
   public TransactionDTO createBackToAgency(Integer accountId, Double amount) {
-    return null;
+
+    TransactionEntity transaction = new TransactionEntity();
+    transaction.setAccount(accountRepository.findById(accountId).orElseThrow(null));
+    LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Bangkok")); // GMT+7 time zone
+    transaction.setTransactionDate(currentTime);
+    transaction.setStatus(3);
+    transaction.setAmount(amount);
+    try{
+      transactionRepository.save(transaction);
+      TransactionDTO transactionDTO = transactionMapper.convertToDTO(transaction);
+      return transactionDTO;
+    } catch (Exception e) {
+      return null;
+    }
   }
 
   @Override
@@ -83,6 +96,23 @@ public class TransactionService implements TransactionServiceImp {
     LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Bangkok")); // GMT+7 time zone
     transaction.setTransactionDate(currentTime);
     transaction.setStatus(2);
+    transaction.setAmount(amount);
+    try{
+      transactionRepository.save(transaction);
+      TransactionDTO transactionDTO = transactionMapper.convertToDTO(transaction);
+      return transactionDTO;
+    } catch (Exception e) {
+      return null;
+    }
+  }
+
+  @Override
+  public TransactionDTO createInvestorPay(Integer accountId, Double amount) {
+    TransactionEntity transaction = new TransactionEntity();
+    transaction.setAccount(accountRepository.findById(accountId).orElseThrow(null));
+    LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Bangkok")); // GMT+7 time zone
+    transaction.setTransactionDate(currentTime);
+    transaction.setStatus(4);
     transaction.setAmount(amount);
     try{
       transactionRepository.save(transaction);
