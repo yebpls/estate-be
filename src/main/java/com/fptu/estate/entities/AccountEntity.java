@@ -81,12 +81,16 @@ public class AccountEntity implements Serializable {
   @JsonBackReference
   private List<TransactionEntity> transactions;
 
+  @Column(name = "name")
   private String name;
+
+  @Column(name = "phone_number")
+  private String phoneNumber;
 
 
   public AccountEntity(Integer id, String password, String email, String avatarUrl, String role,
       Integer gender, Date dob, Date createDate, Date updateDate, Double balance, boolean status,
-      CityEntity city, String name) {
+      CityEntity city, String name, String phoneNumber) {
     this.id = id;
     this.password = password;
     this.email = email;
@@ -100,6 +104,7 @@ public class AccountEntity implements Serializable {
     this.status = status;
     this.city = city;
     this.name = name;
+    this.phoneNumber = phoneNumber;
   }
 
 

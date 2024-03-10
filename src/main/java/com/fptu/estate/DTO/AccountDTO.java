@@ -27,5 +27,7 @@ import lombok.Data;
     private Integer cityId;
 
     private String name;
+
+    private String phoneNumber;
   }
 
