@@ -56,10 +56,10 @@ public class BookingDistributionController {
       @ApiResponse(responseCode = "500", description = "Internal error")
   })
   @PostMapping("/create")
-  public ResponseEntity<?> createBuilding (@RequestBody BookingDistributionDTO bookingDistributionDTO){
+  public ResponseEntity<?> createBookingDistribution (@RequestBody BookingDistributionDTO bookingDistributionDTO){
     try {
-      bookingDistributionServiceImp.createBookingDistribution(bookingDistributionDTO);
-      return ResponseEntity.ok("Create successfully!!!");
+      BookingDistributionDTO bookingDistributionDTO1 = bookingDistributionServiceImp.createBookingDistribution(bookingDistributionDTO);
+      return ResponseEntity.ok(bookingDistributionDTO1);
     } catch (Exception e) {
       throw new RuntimeException("Create error!!!" + e.getMessage());
     }
