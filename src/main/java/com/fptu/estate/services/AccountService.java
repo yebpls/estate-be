@@ -137,6 +137,7 @@ public class AccountService implements AccountServiceImp {
       account.setGender(accountDTO.getGender());
       account.setDob(accountDTO.getDob());
       account.setName(accountDTO.getName());
+      account.setPhoneNumber(accountDTO.getPhoneNumber());
       accountRepository.save(account);
       AccountDTO accountDTO1 = accountMapper.convertToDTO(account);
       return accountDTO1;

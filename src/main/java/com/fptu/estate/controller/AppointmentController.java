@@ -2,6 +2,7 @@ package com.fptu.estate.controller;
 
 import com.fptu.estate.DTO.ApartmentDTO;
 import com.fptu.estate.DTO.AppointmentDTO;
+import com.fptu.estate.DTO.MeetingDateDTO;
 import com.fptu.estate.services.imp.AppointmentServiceImp;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -112,8 +113,9 @@ public class AppointmentController {
   })
   @PutMapping("/meeting-date/{appointmentId}")
   public ResponseEntity<?> changeMeetingDate(@Parameter(description = "Appointment ID", example = "1") @PathVariable("appointmentId") Integer id, @RequestBody
-      Date meetingDate){
+  MeetingDateDTO meetingDateDTO){
     try {
+      Date meetingDate = meetingDateDTO.getMeetingDate();
       AppointmentDTO appointmentDTO = appointmentServiceImp.setMeetingDate(id, meetingDate);
       return ResponseEntity.ok(appointmentDTO);
     } catch (Exception e) {

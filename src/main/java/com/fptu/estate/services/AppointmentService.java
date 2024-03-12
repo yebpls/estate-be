@@ -220,7 +220,6 @@ public class AppointmentService implements AppointmentServiceImp {
       contractDTO.setAddress(building.getAddress());
       ContractDTO contractDTO1 = contractServiceImp.createContract(contractDTO);
       logger.info("Appointment sold successfully for appointId: {}, subId: {}", appointId, subId);
-
       return appointmentDTO;
     } catch (EntityNotFoundException e) {
       logger.error("Entity not found: {}", e.getMessage());
