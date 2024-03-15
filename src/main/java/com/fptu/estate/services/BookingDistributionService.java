@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -62,7 +63,8 @@ public class BookingDistributionService implements BookingDistributionServiceImp
   @Override
   public List<BookingDistributionDTO> getAllByAgencyId(Integer id) {
     AgencyEntity agency = agencyRepository.findById(id).orElseThrow(null);
-    return bookingDistributionRepository.findAllByAgency(agency).stream().map(bookingDistributionMapper::convertToDTO).collect(
+    Sort sort = Sort.by(Sort.Direction.DESC, "distributionDate");
+    return bookingDistributionRepository.findAllByAgency(agency, sort).stream().map(bookingDistributionMapper::convertToDTO).collect(
         Collectors.toList());
   }
 

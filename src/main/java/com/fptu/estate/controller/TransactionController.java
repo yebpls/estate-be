@@ -32,7 +32,7 @@ public class TransactionController {
       @ApiResponse(responseCode = "500", description = "Internal error")
   })
   @GetMapping("")
-  public ResponseEntity<?> getAllArticles (){
+  public ResponseEntity<?> getAllTransactions (){
     try {
       List<TransactionDTO> listTransaction = transactionServiceImp.getAllTransaction();
       return ResponseEntity.ok(listTransaction);

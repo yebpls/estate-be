@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.TimeZone;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,7 +29,7 @@ public class TransactionService implements TransactionServiceImp {
 
   @Override
   public List<TransactionDTO> getAllTransaction() {
-    return transactionRepository.findAll().stream().map(transactionMapper::convertToDTO).collect(
+    return transactionRepository.findAll(Sort.by(Sort.Direction.DESC, "transactionDate")).stream().map(transactionMapper::convertToDTO).collect(
         Collectors.toList());
   }
 
