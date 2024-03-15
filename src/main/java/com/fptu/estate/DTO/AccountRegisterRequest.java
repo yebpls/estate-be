@@ -19,4 +19,6 @@ public class AccountRegisterRequest {
 
   private String name;
 
+  private String phoneNumber;
+
 }

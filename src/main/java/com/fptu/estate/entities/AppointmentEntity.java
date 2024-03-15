@@ -43,4 +43,8 @@ public class AppointmentEntity {
   @JsonBackReference
   private List<ContractImageEntity> contractImages;
 
+  @OneToMany(mappedBy = "appointment")
+  @JsonBackReference
+  private List<ContractEntity> contracts;
+
 }

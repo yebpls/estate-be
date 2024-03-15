@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.TimeZone;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,7 +29,7 @@ public class TransactionService implements TransactionServiceImp {
 
   @Override
   public List<TransactionDTO> getAllTransaction() {
-    return transactionRepository.findAll().stream().map(transactionMapper::convertToDTO).collect(
+    return transactionRepository.findAll(Sort.by(Sort.Direction.DESC, "transactionDate")).stream().map(transactionMapper::convertToDTO).collect(
         Collectors.toList());
   }
 
@@ -73,7 +74,20 @@ public class TransactionService implements TransactionServiceImp {
 
   @Override
   public TransactionDTO createBackToAgency(Integer accountId, Double amount) {
-    return null;
+
+    TransactionEntity transaction = new TransactionEntity();
+    transaction.setAccount(accountRepository.findById(accountId).orElseThrow(null));
+    LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Bangkok")); // GMT+7 time zone
+    transaction.setTransactionDate(currentTime);
+    transaction.setStatus(3);
+    transaction.setAmount(amount);
+    try{
+      transactionRepository.save(transaction);
+      TransactionDTO transactionDTO = transactionMapper.convertToDTO(transaction);
+      return transactionDTO;
+    } catch (Exception e) {
+      return null;
+    }
   }
 
   @Override
@@ -83,6 +97,23 @@ public class TransactionService implements TransactionServiceImp {
     LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Bangkok")); // GMT+7 time zone
     transaction.setTransactionDate(currentTime);
     transaction.setStatus(2);
+    transaction.setAmount(amount);
+    try{
+      transactionRepository.save(transaction);
+      TransactionDTO transactionDTO = transactionMapper.convertToDTO(transaction);
+      return transactionDTO;
+    } catch (Exception e) {
+      return null;
+    }
+  }
+
+  @Override
+  public TransactionDTO createInvestorPay(Integer accountId, Double amount) {
+    TransactionEntity transaction = new TransactionEntity();
+    transaction.setAccount(accountRepository.findById(accountId).orElseThrow(null));
+    LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Bangkok")); // GMT+7 time zone
+    transaction.setTransactionDate(currentTime);
+    transaction.setStatus(4);
     transaction.setAmount(amount);
     try{
       transactionRepository.save(transaction);

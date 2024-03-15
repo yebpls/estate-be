@@ -109,7 +109,7 @@ public class AccountService implements AccountServiceImp {
       AccountEntity account = accountRepository.save(new AccountEntity
           (null, passwordEncoder.encode(accountRegisterRequest.getPassword()),
               accountRegisterRequest.getEmail(), avatarURL, accountRegisterRequest.getRole(),
-              1,accountRegisterRequest.getDob(),date, date, 0.0, false, city, accountRegisterRequest.getName())) ;
+              1,accountRegisterRequest.getDob(),date, date, 0.0, false, city, accountRegisterRequest.getName(), accountRegisterRequest.getPhoneNumber())) ;
       if(account.getRole().matches("CUSTOMER")){
         CustomerEntity customer = customerRepository.save(new CustomerEntity(null, account));
       }
@@ -137,6 +137,7 @@ public class AccountService implements AccountServiceImp {
       account.setGender(accountDTO.getGender());
       account.setDob(accountDTO.getDob());
       account.setName(accountDTO.getName());
+      account.setPhoneNumber(accountDTO.getPhoneNumber());
       accountRepository.save(account);
       AccountDTO accountDTO1 = accountMapper.convertToDTO(account);
       return accountDTO1;

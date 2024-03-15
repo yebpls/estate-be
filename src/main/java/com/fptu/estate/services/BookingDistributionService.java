@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -62,7 +63,8 @@ public class BookingDistributionService implements BookingDistributionServiceImp
   @Override
   public List<BookingDistributionDTO> getAllByAgencyId(Integer id) {
     AgencyEntity agency = agencyRepository.findById(id).orElseThrow(null);
-    return bookingDistributionRepository.findAllByAgency(agency).stream().map(bookingDistributionMapper::convertToDTO).collect(
+    Sort sort = Sort.by(Sort.Direction.DESC, "distributionDate");
+    return bookingDistributionRepository.findAllByAgency(agency, sort).stream().map(bookingDistributionMapper::convertToDTO).collect(
         Collectors.toList());
   }
 
@@ -91,7 +93,7 @@ public class BookingDistributionService implements BookingDistributionServiceImp
       Double backMoney = bookingDistribution.getBookingFee() * apartment.getPrice();
       //Check nếu appointment còn subscription thì ko cho huỷ
       //Nếu appointment status = 1 thì ko cho huỷ
-      if (listSubscription != null && appointment.getAppointmentStatus().equals(1)) {
+      if (!listSubscription.isEmpty() || appointment.getAppointmentStatus().equals(1)) {
         throw new RuntimeException(
             "Error at cancelBooking: còn nhiều sub hoặc appointment đã có khách hẹn");
       } else {
