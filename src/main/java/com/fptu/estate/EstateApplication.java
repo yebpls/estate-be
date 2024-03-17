@@ -30,8 +30,7 @@ public class EstateApplication {
 	}
 
 	private static void init() {
-		TimeZone timeZone = TimeZone.getTimeZone("GMT+7");
-		TimeZone.setDefault(timeZone);
+
 //		Locale.setDefault();
 	}
 

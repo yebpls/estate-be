@@ -1,6 +1,7 @@
 package com.fptu.estate.controller;
 
 import com.fptu.estate.DTO.CustomerDTO;
+import com.fptu.estate.DTO.CustomerDetailDTO;
 import com.fptu.estate.services.imp.CustomerServiceImp;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -8,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +48,25 @@ public class CustomerController {
       return ResponseEntity.ok(customerDTO);
     } catch (Exception e) {
       log.error("Error finding customer with account ID: {}, Error: {}", id, e.getMessage());
+
+      return new ResponseEntity<>("No customer found!!!", HttpStatus.NOT_FOUND);
+    }
+  }
+
+  @Operation(summary = "Get all customer details by Account ID")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Load Customer", content = @Content(schema = @Schema(implementation = CustomerDetailDTO.class))),
+      @ApiResponse(responseCode = "404", description = "Not found"),
+      @ApiResponse(responseCode = "400", description = "Bad request"),
+      @ApiResponse(responseCode = "500", description = "Internal error")
+  })
+  @GetMapping("/get-all-detail")
+  public ResponseEntity<?> getAllCustomerDetail (){
+    try {
+      List<CustomerDetailDTO> listCustomerDetail = customerServiceImp.findAllCustomerDetail();
+      return ResponseEntity.ok(listCustomerDetail);
+    } catch (Exception e) {
+
 
       return new ResponseEntity<>("No customer found!!!", HttpStatus.NOT_FOUND);
     }
