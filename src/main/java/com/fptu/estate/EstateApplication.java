@@ -24,14 +24,13 @@ public class EstateApplication {
 //		SecretKey key = Jwts.SIG.HS256.key().build();
 //		String strKey = Encoders.BASE64.encode(key.getEncoded());
 //		System.out.println("key: " + strKey);
+		TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
 		init();
 //		System.out.println(timeZone);
 		SpringApplication.run(EstateApplication.class, args);
 	}
 
 	private static void init() {
-		TimeZone timeZone = TimeZone.getTimeZone("GMT+7");
-		TimeZone.setDefault(timeZone);
 //		Locale.setDefault();
 	}
 
