@@ -173,8 +173,8 @@ public class AppointmentService implements AppointmentServiceImp {
       apartmentRepository.save(apartment);
 
       AccountEntity accountAdmin = accountRepository.findById(1).orElseThrow(null);
-      Double toAgency = (bookingFee * apartmentPrice) + (0.004 * apartmentPrice);
-      Double investorAmount = (apartmentPrice * 0.004 + apartmentPrice * 0.004);
+      Double toAgency = (bookingFee * apartmentPrice) + (0.01 * apartmentPrice);
+      Double investorAmount = (apartmentPrice * 0.004 + apartmentPrice * 0.01);
       //Chuyển tiền cho agency(bookingFee * apartmentPrice + 0.4% * apartmentPrice)
       AgencyEntity agency = agencyRepository.findById(bookingDistribution.getAgency().getId())
           .orElseThrow(null);
